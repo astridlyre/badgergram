@@ -12,6 +12,7 @@ fb.postsCollection.orderBy("createdOn", "desc").onSnapshot((snapshot) => {
   snapshot.forEach((doc) => {
     let post = doc.data();
     post.id = doc.id;
+    post.authorId = doc.userId;
 
     postsArray.push(post);
   });
@@ -116,6 +117,12 @@ const store = new Vuex.Store({
       postComments.forEach((doc) => {
         fb.commentsCollection.doc(doc.id).delete();
       });
+    },
+    async deleteComment({ state, commit }, comment) {
+      // delete comment in firebase
+      const docId = `${comment.id}`;
+
+      await fb.commentsCollection.doc(docId).delete();
     },
     // eslint-disable-next-line no-unused-vars
     async likePost({ commit }, post) {

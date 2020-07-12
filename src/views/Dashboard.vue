@@ -10,7 +10,7 @@
           :key="post.id"
           class="mt-4 w-full flex flex-col justify-between bg-gray-100 rounded shadow overflow-hidden"
         >
-          <div class="px-4">
+          <div class="px-4 w-full">
             <h5 class="mt-4 text-xl leading-none text-gray-800">
               {{ post.userName }}
             </h5>
@@ -21,9 +21,9 @@
           <div class="px-4 ">
             <p class="mt-4 text-gray-800">{{ post.content | trimLength }}</p>
           </div>
-          <div class="flex w-full justify-center">
+          <div class="px-4 flex w-full">
             <div
-              class="mt-4 py-2 w-11/12 border-t border-gray-300 flex justify-between font-semibold text-sm"
+              class="mt-4 py-4 w-full border-t border-gray-300 flex justify-evenly font-semibold text-sm"
             >
               <a class="flex items-center">
                 <svg
@@ -64,6 +64,7 @@
                 <p class="ml-2 text-gray-800">Likes {{ post.likes }}</p></a
               >
               <a
+                v-if="isPostMine(post.userId)"
                 @click="deletePost(post.id)"
                 class="flex items-center cursor-pointer"
               >
@@ -84,7 +85,7 @@
               </a>
             </div>
           </div>
-          <CommentModal :post="post"></CommentModal>
+          <CommentModal :post="post" :currentUser="currentUser"></CommentModal>
         </div>
       </div>
       <div v-else>
@@ -156,6 +157,7 @@
 
 <script>
 import moment from "moment";
+import * as fb from "../firebase";
 import { mapState } from "vuex";
 import CommentModal from "@/components/CommentModal";
 
@@ -173,7 +175,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["userProfile", "posts"]),
+    ...mapState(["userProfile", "posts", "currentUser"]),
+    currentUser: function() {
+      return fb.auth.currentUser.uid;
+    },
   },
   methods: {
     posterToggle() {
@@ -189,6 +194,13 @@ export default {
     },
     likePost(id, likesCount) {
       this.$store.dispatch("likePost", { id, likesCount });
+    },
+    isPostMine(userId) {
+      if (userId == `${this.currentUser}`) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   filters: {

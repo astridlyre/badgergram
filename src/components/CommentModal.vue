@@ -1,17 +1,40 @@
 <template>
   <div class="p-4 text-gray-900 bg-gray-100 w-full">
-    <div v-for="comment in postComments" :key="comment.id" class="comment mb-4">
-      <div class="flex items-center">
+    <div
+      v-for="comment in postComments"
+      :key="comment.id"
+      class="comment mb-4 relative"
+    >
+      <div class="flex">
         <p class="font-semibold">
           {{ comment.userName }}
         </p>
-        <p class="ml-2 px-2 bg-gray-300 rounded-full">
+        <p class="ml-2 px-2 bg-gray-300 rounded-lg">
           {{ comment.content }}
         </p>
       </div>
-      <span class="block text-xs text-right leading-none text-gray-500">{{
-        comment.createdOn | formatDate
-      }}</span>
+      <div
+        class="mt-1 flex w-full justify-end items-center text-xs text-right leading-none text-gray-500"
+      >
+        <p>{{ comment.createdOn | formatDate }}</p>
+        <a
+          v-if="comment.userId == currentUser"
+          @click="deleteComment(comment.id)"
+          class="cursor-pointer"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="stroke-current text-red-800 h-4 w-4 ml-2"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+            <line x1="15" y1="9" x2="9" y2="15"></line></svg
+        ></a>
+      </div>
     </div>
     <form @submit.prevent class="">
       <textarea
@@ -30,7 +53,7 @@ import { commentsCollection, postsCollection, auth } from "@/firebase";
 import { mapState } from "vuex";
 
 export default {
-  props: ["post"],
+  props: ["post", "currentUser"],
   data() {
     return {
       comment: "",
@@ -61,6 +84,9 @@ export default {
       });
 
       this.comment = "";
+    },
+    deleteComment(id) {
+      this.$store.dispatch("deleteComment", { id });
     },
   },
   filters: {
