@@ -19,7 +19,7 @@
         <p>{{ comment.createdOn | formatDate }}</p>
         <a
           v-if="comment.userId == currentUser"
-          @click="deleteComment(comment.id, post.id)"
+          @click="deleteComment(comment.id)"
           class="cursor-pointer"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
@@ -85,8 +85,12 @@ export default {
 
       this.comment = "";
     },
-    deleteComment(commentId, postId) {
-      this.$store.dispatch("deleteComment", { commentId, postId });
+    async deleteComment(commentId) {
+      this.$store.dispatch("deleteComment", { commentId });
+
+      await postsCollection.doc(this.post.id).update({
+        comments: parseInt(this.post.comments) - 1,
+      });
     },
   },
   filters: {

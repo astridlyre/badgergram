@@ -3,8 +3,7 @@ eslint-disable no-unused-vars */
 <template>
   <div class="w-full mb-4">
     <div>
-      <!-- <canvas id="profilePic" ref="canvas" width="250" height="250"></canvas> -->
-      <h4 class="text-teal-900 font-bold">Draw an Awesome Picture</h4>
+      <h4 class="text-teal-900 font-bold">Draw an Awesome Picture?</h4>
     </div>
     <canvas
       id="canvas"
@@ -21,9 +20,15 @@ eslint-disable no-unused-vars */
       style="touch-action: none;"
     ></canvas>
     <div class="w-full flex justify-end">
+      <p
+        v-if="success"
+        class="leading-none self-center mt-2 text-teal-600 font-semibold text-xs"
+      >
+        Successfully saved!
+      </p>
       <button
         @click="clearCanvas()"
-        class="mt-2 self-end px-2 py-1 bg-red-700 text-sm text-teal-100 font-semibold rounded hover:bg-red-800"
+        class="ml-4 mt-2 self-end px-2 py-1 bg-red-700 text-sm text-teal-100 font-semibold rounded hover:bg-red-800"
       >
         Clear
       </button>
@@ -38,6 +43,9 @@ eslint-disable no-unused-vars */
 </template>
 
 <script>
+import * as fb from "../firebase";
+import { mapState } from "vuex";
+
 export default {
   data: function() {
     return {
@@ -54,9 +62,11 @@ export default {
       },
       canvas: null,
       ctx: null,
+      success: false,
     };
   },
   computed: {
+    ...mapState(["profilePic"]),
     currentMouse: function() {
       const rect = this.canvas.getBoundingClientRect();
 
@@ -64,6 +74,9 @@ export default {
         x: this.mouse.current.x - rect.left,
         y: this.mouse.current.y - rect.top,
       };
+    },
+    currentUser: function() {
+      return fb.auth.currentUser.uid;
     },
   },
   methods: {
@@ -106,10 +119,21 @@ export default {
       this.ctx.beginPath();
     },
     saveCanvas() {
-      const link = document.createElement("a");
-      link.download = "myawesomenewpic.png";
-      link.href = this.$refs.canvas.toDataURL();
-      link.click();
+      const profilePicRef = fb.storageRef.child(`${this.currentUser}.png`);
+      // profilePicRef.delete().then
+
+      this.canvas.toBlob(function(blob) {
+        // eslint-disable-next-line no-unused-vars
+        profilePicRef.put(blob).then(function(snapshot) {
+          console.log("Success!");
+        });
+      });
+
+      this.success = true;
+
+      setTimeout(() => {
+        this.success = false;
+      }, 2000);
     },
   },
   mounted: function() {

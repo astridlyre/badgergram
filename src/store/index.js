@@ -84,7 +84,7 @@ const store = new Vuex.Store({
       await fb.usersCollection.doc(user.uid).set({
         name: form.name,
         bio: "",
-        // pic: "",
+        picUrl: "",
       });
 
       // fetch user profile and set in state
@@ -123,13 +123,8 @@ const store = new Vuex.Store({
     async deleteComment({ state, commit }, comment) {
       // delete comment in firebase
       const docId = `${comment.commentId}`;
-      const postId = `${comment.postId}`;
 
       await fb.commentsCollection.doc(docId).delete();
-
-      await fb.postsCollection.doc(postId).update({
-        comments: parseInt(this.post.comments) - 1,
-      });
     },
     // eslint-disable-next-line no-unused-vars
     async likePost({ commit }, post) {
@@ -152,13 +147,22 @@ const store = new Vuex.Store({
         likes: post.likesCount + 1,
       });
     },
+    // async updatePic(userId) {
+    //   const profilePicRef = fb.storageRef.child(`${userId}.png`);
+
+    //   await profilePicRef.getDownloadURL().then(function(url) {
+    //     console.log(url);
+    //     // const img = document.getElementById("profilePic");
+    //     // img.src = url;
+    //   });
+    // },
     async updateProfile({ dispatch }, user) {
       const userId = fb.auth.currentUser.uid;
       // update user object
       const userRef = await fb.usersCollection.doc(userId).update({
         name: user.name,
         bio: user.bio,
-        // pic: user.pic,
+        picUrl: user.picUrl,
       });
 
       dispatch("fetchUserProfile", { uid: userId });
