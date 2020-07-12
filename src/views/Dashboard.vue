@@ -8,8 +8,17 @@
         <div
           v-for="post in posts"
           :key="post.id"
-          class="mt-4 w-full flex flex-col justify-between bg-gray-100 rounded shadow overflow-hidden"
+          class="mt-4 w-full flex flex-col bg-gray-100 rounded shadow overflow-hidden"
         >
+          <!-- <PostModal
+            :postId="post.id"
+            :userName="post.userName"
+            :createdOn="post.createdOn"
+            :postContent="post.content"
+            :userId="post.userId"
+            :postComments="post.comments"
+            :postLikes="post.likes"
+          ></PostModal> -->
           <div class="px-4 w-full">
             <h5 class="mt-4 text-xl leading-none text-gray-800">
               {{ post.userName }}
@@ -18,8 +27,25 @@
               post.createdOn | formatDate
             }}</span>
           </div>
-          <div class="px-4 ">
-            <p class="mt-4 text-gray-800">{{ post.content | trimLength }}</p>
+          <div v-if="post.content.length > 200" class="px-4">
+            <div>
+              <p v-if="showFullPost" class="mt-4 text-gray-800">
+                {{ post.content | trimLength
+                }}<a
+                  @click="showFullPost = !showFullPost"
+                  class="cursor-pointer"
+                  ><span
+                    class="text-color-teal-600 font-bold hover:text-color-teal-400"
+                  >
+                    . . .</span
+                  ></a
+                >
+              </p>
+              <p v-else class="mt-4 text-gray-800">{{ post.content }}</p>
+            </div>
+          </div>
+          <div v-else class="px-4">
+            <p class="mt-4 text-gray-800">{{ post.content }}</p>
           </div>
           <div class="px-4 flex w-full">
             <div
@@ -172,6 +198,7 @@ export default {
         content: "",
       },
       postComments: [],
+      showFullPost: true,
     };
   },
   computed: {
@@ -216,7 +243,7 @@ export default {
       if (val.length < 200) {
         return val;
       }
-      return `${val.substring(0, 200)}...`;
+      return `${val.substring(0, 200)}`;
     },
   },
 };

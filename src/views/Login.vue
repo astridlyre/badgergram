@@ -51,6 +51,7 @@
             class="w-full bg-teal-900 rounded text-teal-100 text-sm font-semibold py-2 mt-2 hover:bg-teal-800"
             type="button"
             @click="login()"
+            v-on:keyup.enter="login()"
           >
             Sign In
           </button>
@@ -142,6 +143,7 @@
           </div>
           <button
             @click="signup()"
+            v-on:keyup.enter="signup()"
             type="button"
             class="mt-8 w-full bg-teal-100 rounded-sm text-teal-900 text-sm font-semibold py-2 mt-4 hover:bg-teal-200 hover:text-teal-800"
           >

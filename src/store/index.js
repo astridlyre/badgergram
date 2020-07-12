@@ -134,7 +134,6 @@ const store = new Vuex.Store({
       if (doc.exists) {
         return;
       }
-
       // create post
       await fb.likesCollection.doc(docId).set({
         postId: post.id,
