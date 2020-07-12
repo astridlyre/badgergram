@@ -25,7 +25,7 @@
             <div
               class="mt-4 py-2 w-11/12 border-t border-gray-300 flex justify-between font-semibold text-sm"
             >
-              <a class="flex items-center cursor-pointer">
+              <a class="flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"

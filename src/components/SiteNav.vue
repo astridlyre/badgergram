@@ -29,7 +29,7 @@
               <polyline points="9 22 9 12 15 12 15 22"></polyline></svg
           ></a>
         </router-link>
-        <a @click="logout()" class="pl-4 flex items-center">
+        <a @click="logout()" class="pl-4 flex items-center cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
