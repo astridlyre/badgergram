@@ -17,6 +17,7 @@ eslint-disable no-unused-vars */
       @mouseup="handleMouseUp"
       @mousemove="handleMouseMove"
       @mouseout="handleMouseUp"
+      style="touch-action: none;"
     ></canvas>
     <div class="w-full flex justify-end">
       <button
