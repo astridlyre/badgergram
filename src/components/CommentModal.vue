@@ -19,7 +19,7 @@
         <p>{{ comment.createdOn | formatDate }}</p>
         <a
           v-if="comment.userId == currentUser"
-          @click="deleteComment(comment.id)"
+          @click="deleteComment(comment.id, post.id)"
           class="cursor-pointer"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +53,7 @@ import { commentsCollection, postsCollection, auth } from "@/firebase";
 import { mapState } from "vuex";
 
 export default {
-  props: ["post", "currentUser"],
+  props: ["post", "currentUser", "postId"],
   data() {
     return {
       comment: "",
@@ -85,8 +85,8 @@ export default {
 
       this.comment = "";
     },
-    deleteComment(id) {
-      this.$store.dispatch("deleteComment", { id });
+    deleteComment(commentId, postId) {
+      this.$store.dispatch("deleteComment", { commentId, postId });
     },
   },
   filters: {

@@ -3,8 +3,8 @@
     class="p-4 h-screen max-w-full bg-teal-900 flex flex-col justify-center items-center"
   >
     <div class="p-4 bg-gray-100 rounded flex flex-col items-start relative">
-      <h3 class="mt-4 w-full font-bold text-lg text-teal-900">Settings</h3>
-      <p class="text-teal-900">Update your profile</p>
+      <h3 class="mt-4 w-full font-bold text-lg text-gray-800">Settings</h3>
+      <p class="text-gray-900">Update your profile</p>
 
       <transition name="fade">
         <p
@@ -15,35 +15,18 @@
         </p>
       </transition>
 
-      <form @submit.prevent class="mt-4 w-full">
-        <div class="w-full">
-          <label for="name" class="text-teal-900">Name</label>
-          <input
-            v-model.trim="name"
-            type="text"
-            :placeholder="userProfile.name"
-            id="name"
-            class="ml-2 form-inputtext-teal-900"
-          />
-        </div>
-        <div class="mt-4 w-full">
-          <label for="name" class="text-teal-900"
-            >Bio (Max 140 characters)</label
-          >
-          <textarea
-            v-model.trim="bio"
-            class="form-textarea block w-full resize-none text-teal-900"
-            rows="3"
-            id="bio"
-            :placeholder="userProfile.bio"
-            maxlength="140"
-          ></textarea>
-        </div>
-        <!-- <div
-          class="mt-4 w-full"
-          v-for="friend in friends"
-          :key="friendId"
-        ></div> -->
+      <form
+        @submit.prevent
+        class="mt-4 w-full flex items-center justify-between"
+      >
+        <label for="name">Name</label>
+        <input
+          v-model.trim="name"
+          type="text"
+          :placeholder="userProfile.name"
+          id="name"
+          class="ml-2 form-input text-teal-900"
+        />
       </form>
       <button
         @click="updateProfile()"
@@ -72,7 +55,6 @@ export default {
     updateProfile() {
       this.$store.dispatch("updateProfile", {
         name: this.name !== "" ? this.name : this.userProfile.name,
-        bio: this.bio !== "" ? this.bio : this.userProfile.bio,
       });
 
       this.name = "";

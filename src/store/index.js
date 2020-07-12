@@ -83,6 +83,7 @@ const store = new Vuex.Store({
       // create user profile object
       await fb.usersCollection.doc(user.uid).set({
         name: form.name,
+        bio: "",
       });
 
       // fetch user profile and set in state
@@ -120,9 +121,14 @@ const store = new Vuex.Store({
     },
     async deleteComment({ state, commit }, comment) {
       // delete comment in firebase
-      const docId = `${comment.id}`;
+      const docId = `${comment.commentId}`;
+      const postId = `${comment.postId}`;
 
       await fb.commentsCollection.doc(docId).delete();
+
+      await fb.postsCollection.doc(postId).update({
+        comments: parseInt(this.post.comments) - 1,
+      });
     },
     // eslint-disable-next-line no-unused-vars
     async likePost({ commit }, post) {
@@ -150,6 +156,7 @@ const store = new Vuex.Store({
       // update user object
       const userRef = await fb.usersCollection.doc(userId).update({
         name: user.name,
+        bio: user.bio,
       });
 
       dispatch("fetchUserProfile", { uid: userId });

@@ -1,5 +1,5 @@
 <template>
-  <section class="pb-20 w-full bg-teal-900">
+  <section class="pb-20 w-full min-h-screen bg-teal-900">
     <div
       class="px-4 relative flex flex-col min-h-full w-full justify-start items-center"
     >
@@ -10,7 +10,8 @@
           :key="post.id"
           class="mt-4 w-full flex flex-col bg-gray-100 rounded shadow overflow-hidden"
         >
-          <!-- <PostModal
+          <PostModal
+            :post="post"
             :postId="post.id"
             :userName="post.userName"
             :createdOn="post.createdOn"
@@ -18,8 +19,8 @@
             :userId="post.userId"
             :postComments="post.comments"
             :postLikes="post.likes"
-          ></PostModal> -->
-          <div class="px-4 w-full">
+          ></PostModal>
+          <!-- <div class="px-4 w-full">
             <h5 class="mt-4 text-xl leading-none text-gray-800">
               {{ post.userName }}
             </h5>
@@ -33,12 +34,8 @@
                 {{ post.content | trimLength
                 }}<a
                   @click="showFullPost = !showFullPost"
-                  class="cursor-pointer"
-                  ><span
-                    class="text-color-teal-600 font-bold hover:text-color-teal-400"
-                  >
-                    . . .</span
-                  ></a
+                  class="cursor-pointer text-color-gray-300 font-bold hover:text-color-gray-800"
+                  ><span>See more</span></a
                 >
               </p>
               <p v-else class="mt-4 text-gray-800">{{ post.content }}</p>
@@ -111,11 +108,11 @@
               </a>
             </div>
           </div>
-          <CommentModal :post="post" :currentUser="currentUser"></CommentModal>
+          <CommentModal :post="post" :currentUser="currentUser"></CommentModal> -->
         </div>
       </div>
       <div v-else>
-        <p class="mt-4 text-gray-800 text-sm">There are currently no posts</p>
+        <p class="mt-4 text-teal-100 text-sm">There are currently no posts</p>
       </div>
     </div>
 
@@ -185,11 +182,13 @@
 import moment from "moment";
 import * as fb from "../firebase";
 import { mapState } from "vuex";
-import CommentModal from "@/components/CommentModal";
+// import CommentModal from "@/components/CommentModal";
+import PostModal from "@/components/PostModal";
 
 export default {
   components: {
-    CommentModal,
+    // CommentModal,
+    PostModal,
   },
   data() {
     return {
@@ -198,11 +197,11 @@ export default {
         content: "",
       },
       postComments: [],
-      showFullPost: true,
+      // showFullPost: true,
     };
   },
   computed: {
-    ...mapState(["userProfile", "posts", "currentUser"]),
+    ...mapState(["userProfile", "posts"]),
     currentUser: function() {
       return fb.auth.currentUser.uid;
     },
@@ -243,7 +242,7 @@ export default {
       if (val.length < 200) {
         return val;
       }
-      return `${val.substring(0, 200)}`;
+      return `${val.substring(0, 200)}...`;
     },
   },
 };
