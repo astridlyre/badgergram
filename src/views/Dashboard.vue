@@ -1,7 +1,7 @@
 <template>
-  <section class="w-full min-h-full bg-teal-900">
+  <section class="pb-20 w-full bg-teal-900">
     <div
-      class="px-4 relative flex flex-col h-screen min-h-full w-full justify-start items-center"
+      class="px-4 relative flex flex-col min-h-full w-full justify-start items-center"
     >
       <!-- post listing -->
       <div v-if="posts.length" class="w-full">

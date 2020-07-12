@@ -1,9 +1,9 @@
 <template>
   <div
     id="app"
-    class="bg-gray-300 flex flex-col items-center justify-start w-full h-full"
+    class="bg-gray-300 flex flex-col items-center justify-start w-full h-full overflow-hidden"
   >
-    <div class="max-w-screen-sm w-full">
+    <div class="max-w-screen-sm w-full h-full">
       <SiteNav v-if="showNav"></SiteNav>
       <router-view />
     </div>
