@@ -1,15 +1,15 @@
 <template>
   <section
-    class="p-4 h-screen max-w-full flex flex-col justify-center items-center"
+    class="p-4 h-screen max-w-full bg-teal-900 flex flex-col justify-center items-center"
   >
     <div class="p-4 bg-gray-100 rounded flex flex-col items-start relative">
-      <h3 class="mt-4 w-full font-bold text-lg">Settings</h3>
-      <p class="text-gray-700">Update your profile</p>
+      <h3 class="mt-4 w-full font-bold text-lg text-gray-800">Settings</h3>
+      <p class="text-gray-900">Update your profile</p>
 
       <transition name="fade">
         <p
           v-if="showSuccess"
-          class="text-green-500 absolute inset-x-0 text-center transition-all"
+          class="text-teal-700 absolute inset-x-0 text-center transition-all"
         >
           Profile updated!
         </p>
@@ -25,12 +25,12 @@
           type="text"
           :placeholder="userProfile.name"
           id="name"
-          class="ml-2 form-input"
+          class="ml-2 form-input text-teal-900"
         />
       </form>
       <button
         @click="updateProfile()"
-        class="mt-4 self-end px-2 py-1 bg-gray-400 text-sm font-semibold rounded"
+        class="mt-4 self-end px-2 py-1 bg-teal-900 text-sm text-teal-100 font-semibold rounded hover:bg-teal-800"
       >
         Update Profile
       </button>

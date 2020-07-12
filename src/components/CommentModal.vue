@@ -1,47 +1,33 @@
 <template>
-  <div class="fixed inset-0 transition-all">
-    <div
-      class="w-full h-full bg-gray-900 bg-opacity-75 flex justify-center items-center"
-    >
-      <div class="p-4 text-gray-900 bg-gray-100 w-3/4">
-        <div class="flex justify-between p-4">
-          <h5 class="text-lg font-thin">Add a Comment</h5>
-          <a @click="$emit('close')" class="-mr-4 -mt-4"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="stroke-current h-6 w-6 text-gray-900"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line></svg
-          ></a>
-        </div>
-        <form @submit.prevent class=" px-4">
-          <textarea
-            v-model.trim="comment"
-            placeholder="What do you think?"
-            class="form-textarea resize-none w-full"
-          ></textarea>
-          <div class="flex justify-end">
-            <button
-              class="px-2 py-1 bg-gray-400 text-sm font-semibold rounded"
-              @click="addComment()"
-              :disabled="comment == ''"
-            >
-              Add Comment
-            </button>
-          </div>
-        </form>
+  <div class="p-4 text-gray-900 bg-gray-100 w-full">
+    <div v-for="comment in postComments" :key="comment.id" class="comment mb-4">
+      <div class="flex items-center">
+        <p class="font-semibold">
+          {{ comment.userName }}
+        </p>
+        <p class="ml-2 px-2 bg-gray-300 rounded-full">
+          {{ comment.content }}
+        </p>
       </div>
+      <span class="block text-xs text-right leading-none text-gray-500">{{
+        comment.createdOn | formatDate
+      }}</span>
     </div>
+    <form @submit.prevent class="">
+      <textarea
+        v-model.trim="comment"
+        v-on:keyup.enter="addComment()"
+        placeholder="Write a comment..."
+        class="form-textarea resize-none w-full h-10 text-sm rounded-full"
+      ></textarea>
+    </form>
   </div>
 </template>
 
 <script>
+import moment from "moment";
 import { commentsCollection, postsCollection, auth } from "@/firebase";
+import { mapState } from "vuex";
 
 export default {
   props: ["post"],
@@ -49,6 +35,15 @@ export default {
     return {
       comment: "",
     };
+  },
+  computed: {
+    ...mapState(["comments"]),
+    postComments: function() {
+      let currentPost = this.post.id;
+      return this.comments.filter(function(comment) {
+        return comment.postId === currentPost;
+      });
+    },
   },
   methods: {
     async addComment() {
@@ -60,14 +55,22 @@ export default {
         userId: auth.currentUser.uid,
         userName: this.$store.state.userProfile.name,
       });
-
       // update comment count on post
       await postsCollection.doc(this.post.id).update({
         comments: parseInt(this.post.comments) + 1,
       });
 
-      // close modal
-      this.$emit("close");
+      this.comment = "";
+    },
+  },
+  filters: {
+    formatDate(val) {
+      if (!val) {
+        return "-";
+      }
+
+      let date = val.toDate();
+      return moment(date).fromNow();
     },
   },
 };

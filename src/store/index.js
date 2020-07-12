@@ -19,10 +19,24 @@ fb.postsCollection.orderBy("createdOn", "desc").onSnapshot((snapshot) => {
   store.commit("setPosts", postsArray);
 });
 
+fb.commentsCollection.orderBy("createdOn", "asc").onSnapshot((snapshot) => {
+  let commentsArray = [];
+
+  snapshot.forEach((doc) => {
+    let comment = doc.data();
+    comment.id = doc.id;
+
+    commentsArray.push(comment);
+  });
+
+  store.commit("setComments", commentsArray);
+});
+
 const store = new Vuex.Store({
   state: {
     userProfile: {},
     posts: [],
+    comments: [],
   },
   mutations: {
     setUserProfile(state, val) {
@@ -30,6 +44,9 @@ const store = new Vuex.Store({
     },
     setPosts(state, val) {
       state.posts = val;
+    },
+    setComments(state, val) {
+      state.comments = val;
     },
   },
   actions: {
@@ -80,6 +97,24 @@ const store = new Vuex.Store({
         userName: state.userProfile.name,
         comments: 0,
         likes: 0,
+      });
+    },
+    async deletePost({ state, commit }, post) {
+      // delete post in firebase
+      const docId = `${post.id}`;
+
+      await fb.postsCollection.doc(docId).delete();
+      const postLikes = await fb.likesCollection
+        .where("postId", "==", docId)
+        .get();
+      postLikes.forEach((doc) => {
+        fb.likesCollection.doc(doc.id).delete();
+      });
+      const postComments = await fb.commentsCollection
+        .where("postId", "==", docId)
+        .get();
+      postComments.forEach((doc) => {
+        fb.commentsCollection.doc(doc.id).delete();
       });
     },
     // eslint-disable-next-line no-unused-vars
