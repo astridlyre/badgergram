@@ -97,7 +97,7 @@
       class="flex flex-col justify-end items-center fixed bottom-0 bg-gray-100 max-w-screen-sm w-full"
     >
       <div class="p-2 flex w-full justify-center items-center">
-        <a @click="posterToggle()">
+        <a @click="posterToggle()" class="cursor-pointer">
           <svg
             v-if="!posterVisible"
             xmlns="http://www.w3.org/2000/svg"
