@@ -84,6 +84,7 @@ const store = new Vuex.Store({
       await fb.usersCollection.doc(user.uid).set({
         name: form.name,
         bio: "",
+        // pic: "",
       });
 
       // fetch user profile and set in state
@@ -157,6 +158,7 @@ const store = new Vuex.Store({
       const userRef = await fb.usersCollection.doc(userId).update({
         name: user.name,
         bio: user.bio,
+        // pic: user.pic,
       });
 
       dispatch("fetchUserProfile", { uid: userId });

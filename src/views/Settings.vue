@@ -67,6 +67,7 @@ export default {
     return {
       name: "",
       bio: "",
+      // pic: "",
       showSuccess: false,
     };
   },
@@ -78,6 +79,7 @@ export default {
       this.$store.dispatch("updateProfile", {
         name: this.name !== "" ? this.name : this.userProfile.name,
         bio: this.bio !== "" ? this.bio : this.userProfile.bio,
+        // pic: this.pic !== "" ? this.pic : this.userProfile.pic,
       });
 
       this.name = "";

@@ -3,7 +3,8 @@ eslint-disable no-unused-vars */
 <template>
   <div class="w-full mb-4">
     <div>
-      <h4 class="text-teal-900 font-bold">Draw New Profile Pic</h4>
+      <!-- <canvas id="profilePic" ref="canvas" width="250" height="250"></canvas> -->
+      <h4 class="text-teal-900 font-bold">Draw an Awesome Picture</h4>
     </div>
     <canvas
       id="canvas"
@@ -57,8 +58,7 @@ export default {
   },
   computed: {
     currentMouse: function() {
-      var c = document.getElementById("canvas");
-      var rect = c.getBoundingClientRect();
+      const rect = this.canvas.getBoundingClientRect();
 
       return {
         x: this.mouse.current.x - rect.left,
@@ -71,17 +71,13 @@ export default {
     draw: function(event) {
       // requestAnimationFrame(this.draw);
       if (this.mouse.down) {
-        var c = document.getElementById("canvas");
+        this.ctx.clearRect(0, 0, 250, 250);
 
-        var ctx = c.getContext("2d");
-
-        ctx.clearRect(0, 0, 800, 800);
-
-        ctx.lineTo(this.currentMouse.x, this.currentMouse.y);
-        ctx.strokeStyle = "#234E52";
-        ctx.lineWidth = 3;
-        ctx.lineCap = "round";
-        ctx.stroke();
+        this.ctx.lineTo(this.currentMouse.x, this.currentMouse.y);
+        this.ctx.strokeStyle = "#234E52";
+        this.ctx.lineWidth = 3;
+        this.ctx.lineCap = "round";
+        this.ctx.stroke();
       }
     },
     handleMouseDown: function(event) {
@@ -91,10 +87,7 @@ export default {
         y: event.pageY,
       };
 
-      var c = document.getElementById("canvas");
-      var ctx = c.getContext("2d");
-
-      ctx.moveTo(this.currentMouse.x, this.currentMouse.y);
+      this.ctx.moveTo(this.currentMouse.x, this.currentMouse.y);
     },
     handleMouseUp: function() {
       this.mouse.down = false;
@@ -108,12 +101,13 @@ export default {
       this.draw(event);
     },
     clearCanvas() {
+      //   this.ctxStore = this.ctx;
       this.ctx.clearRect(0, 0, 250, 250);
       this.ctx.beginPath();
     },
     saveCanvas() {
       const link = document.createElement("a");
-      link.download = `${this.outputName}.png`;
+      link.download = "myawesomenewpic.png";
       link.href = this.$refs.canvas.toDataURL();
       link.click();
     },
