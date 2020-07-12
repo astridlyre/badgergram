@@ -27,7 +27,7 @@
               v-model.trim="email"
               type="email"
               placeholder="Email"
-              class="appearance-none font-thin placeholder-teal-100 bg-transparent border-b border-b-1 border-teal-100 w-full text-gray-800 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
+              class="appearance-none font-thin placeholder-teal-100 bg-transparent border-b border-b-1 border-teal-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
             />
           </div>
         </form>

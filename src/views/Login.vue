@@ -18,7 +18,7 @@
               placeholder="Email"
               id="email1"
               required
-              class="appearance-none font-thin bg-transparent placeholder-gray-800 border-b border-b-1 border-gray-800 w-full text-gray-800 py-1 px-2 leading-tight focus:outline-none focus:border-teal-800"
+              class="appearance-none font-thin bg-transparent placeholder-gray-800 border-b border-b-1 border-gray-800 w-full text-teal-900 py-1 px-2 leading-tight focus:outline-none focus:border-teal-800"
               v-model.trim="loginForm.email"
             />
           </div>
@@ -28,7 +28,7 @@
               placeholder="Password"
               id="password1"
               required
-              class="appearance-none font-thin bg-transparent placeholder-gray-800 border-b border-b-1 border-gray-800 w-full text-gray-800 py-1 px-2 leading-tight focus:outline-none focus:border-teal-800 "
+              class="appearance-none font-thin bg-transparent placeholder-gray-800 border-b border-b-1 border-gray-800 w-full text-teal-900 py-1 px-2 leading-tight focus:outline-none focus:border-teal-800 "
               v-model.trim="loginForm.password"
             />
           </div>
@@ -100,7 +100,7 @@
                 placeholder="Name"
                 id="name"
                 required
-                class="appearance-none font-thin bg-transparent border-b border-b-1 border-teal-100 w-full text-gray-800 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
+                class="appearance-none font-thin bg-transparent border-b border-b-1 border-teal-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
               />
             </label>
           </div>
@@ -112,7 +112,7 @@
                 placeholder="Email"
                 id="email2"
                 required
-                class="appearance-none font-thin bg-transparent border-b border-b-1 border-teal-100 w-full text-gray-800 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
+                class="appearance-none font-thin bg-transparent border-b border-b-1 border-teal-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
               />
             </label>
           </div>
@@ -124,7 +124,7 @@
                 placeholder="Password (6+ char)"
                 id="password2"
                 required
-                class="appearance-none font-thin bg-transparent border-b border-b-1 border-teal-100 w-full text-gray-800 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
+                class="appearance-none font-thin bg-transparent border-b border-b-1 border-teal-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
               />
             </label>
           </div>
@@ -136,7 +136,7 @@
                 placeholder="Confirm Password"
                 id="passwordCheck"
                 required
-                class="appearance-none font-thin bg-transparent border-b border-b-1 border-teal-100 w-full text-gray-800 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
+                class="appearance-none font-thin bg-transparent border-b border-b-1 border-teal-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
               />
             </label>
           </div>
