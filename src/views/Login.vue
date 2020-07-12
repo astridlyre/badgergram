@@ -1,8 +1,5 @@
 <template>
-  <div
-    :style="cssBg"
-    class="bg-cover bg-center flex items-center justify-center min-h-screen"
-  >
+  <div class="flex items-center justify-center min-h-screen">
     <main
       class="bg-gray-100 bg-opacity-75 text-gray-800 p-8 rounded w-5/6 max-w-sm relative"
     >
@@ -21,7 +18,7 @@
               placeholder="Email"
               id="email1"
               required
-              class="appearance-none font-thin bg-transparent border-b border-b-1 border-gray-800 w-full text-gray-800 py-1 px-2 leading-tight focus:outline-none focus:border-teal-800"
+              class="appearance-none font-thin bg-transparent placeholder-gray-800 border-b border-b-1 border-gray-800 w-full text-gray-800 py-1 px-2 leading-tight focus:outline-none focus:border-teal-800"
               v-model.trim="loginForm.email"
             />
           </div>
@@ -31,7 +28,7 @@
               placeholder="Password"
               id="password1"
               required
-              class="appearance-none font-thin bg-transparent border-b border-b-1 border-gray-800 w-full text-gray-800 py-1 px-2 leading-tight focus:outline-none focus:border-teal-800 "
+              class="appearance-none font-thin bg-transparent placeholder-gray-800 border-b border-b-1 border-gray-800 w-full text-gray-800 py-1 px-2 leading-tight focus:outline-none focus:border-teal-800 "
               v-model.trim="loginForm.password"
             />
           </div>

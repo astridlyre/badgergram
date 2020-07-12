@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    class="bg-gray-600 flex flex-col items-center justify-start w-full h-full"
+    class="bg-gray-300 flex flex-col items-center justify-start w-full h-full"
   >
     <div class="max-w-screen-sm w-full">
       <SiteNav v-if="showNav"></SiteNav>
