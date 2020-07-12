@@ -1,5 +1,5 @@
 <template>
-  <header class="w-full bg-gray-100">
+  <header class="w-full bg-gray-100 absolute inset-x-0 top-0">
     <nav class="flex justify-between items-center">
       <router-link to="/">
         <h3 class="ml-4 text-xl text-teal-600">

@@ -1,5 +1,5 @@
 <template>
-  <section class="pb-20 w-full min-h-screen bg-teal-900">
+  <section class="py-16 mt-2 w-full bg-teal-900">
     <div
       class="px-4 relative flex flex-col min-h-full w-full justify-start items-center"
     >
@@ -20,95 +20,6 @@
             :postComments="post.comments"
             :postLikes="post.likes"
           ></PostModal>
-          <!-- <div class="px-4 w-full">
-            <h5 class="mt-4 text-xl leading-none text-gray-800">
-              {{ post.userName }}
-            </h5>
-            <span class="text-xs leading-none text-gray-500">{{
-              post.createdOn | formatDate
-            }}</span>
-          </div>
-          <div v-if="post.content.length > 200" class="px-4">
-            <div>
-              <p v-if="showFullPost" class="mt-4 text-gray-800">
-                {{ post.content | trimLength
-                }}<a
-                  @click="showFullPost = !showFullPost"
-                  class="cursor-pointer text-color-gray-300 font-bold hover:text-color-gray-800"
-                  ><span>See more</span></a
-                >
-              </p>
-              <p v-else class="mt-4 text-gray-800">{{ post.content }}</p>
-            </div>
-          </div>
-          <div v-else class="px-4">
-            <p class="mt-4 text-gray-800">{{ post.content }}</p>
-          </div>
-          <div class="px-4 flex w-full">
-            <div
-              class="mt-4 py-4 w-full border-t border-gray-300 flex justify-evenly font-semibold text-sm"
-            >
-              <a class="flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="stroke-current text-gray-800 h-4 w-4"
-                >
-                  <path
-                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                  ></path>
-                </svg>
-                <p class="ml-2 text-gray-800">
-                  Comments {{ post.comments }}
-                </p></a
-              >
-
-              <a
-                @click="likePost(post.id, post.likes)"
-                class="flex items-center cursor-pointer"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="stroke-current text-gray-800 h-4 w-4"
-                >
-                  <path
-                    d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
-                  ></path>
-                </svg>
-                <p class="ml-2 text-gray-800">Likes {{ post.likes }}</p></a
-              >
-              <a
-                v-if="isPostMine(post.userId)"
-                @click="deletePost(post.id)"
-                class="flex items-center cursor-pointer"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="stroke-current text-red-800 h-4 w-4"
-                >
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="9" y1="9" x2="15" y2="15"></line>
-                  <line x1="15" y1="9" x2="9" y2="15"></line>
-                </svg>
-                <p class="ml-2 text-red-800">Delete</p>
-              </a>
-            </div>
-          </div>
-          <CommentModal :post="post" :currentUser="currentUser"></CommentModal> -->
         </div>
       </div>
       <div v-else>
@@ -182,12 +93,10 @@
 import moment from "moment";
 import * as fb from "../firebase";
 import { mapState } from "vuex";
-// import CommentModal from "@/components/CommentModal";
 import PostModal from "@/components/PostModal";
 
 export default {
   components: {
-    // CommentModal,
     PostModal,
   },
   data() {
@@ -197,7 +106,6 @@ export default {
         content: "",
       },
       postComments: [],
-      // showFullPost: true,
     };
   },
   computed: {

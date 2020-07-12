@@ -4,7 +4,6 @@
   >
     <div class="p-4 bg-gray-100 rounded flex flex-col items-start relative">
       <h3 class="mt-4 w-full font-bold text-lg text-teal-900">Settings</h3>
-      <p class="text-teal-900">Update your profile</p>
 
       <transition name="fade">
         <p
@@ -16,6 +15,7 @@
       </transition>
 
       <form @submit.prevent class="mt-4 w-full">
+        <ProfilePicModal></ProfilePicModal>
         <div class="w-full">
           <label for="name" class="text-teal-900">Name</label>
           <input
@@ -57,11 +57,16 @@
 
 <script>
 import { mapState } from "vuex";
+import ProfilePicModal from "@/components/ProfilePicModal";
 
 export default {
+  components: {
+    ProfilePicModal,
+  },
   data() {
     return {
       name: "",
+      bio: "",
       showSuccess: false,
     };
   },
