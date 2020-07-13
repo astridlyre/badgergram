@@ -7,14 +7,14 @@
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="stroke-current h-6 w-6 text-teal-100"
+        class="stroke-current h-6 w-6 text-teal-100 cursor-pointer"
       >
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </div>
     <div class="flex flex-col items-center w-full">
-      <h3 class="font-thin text-3xl text-center text-teal-100">
+      <h3 class="text-3xl text-center text-teal-100">
         Reset Password
       </h3>
       <div v-if="!showSuccess" class="p-4">
@@ -34,7 +34,7 @@
 
         <button
           @click="resetPassword()"
-          class="w-full bg-teal-100 rounded-sm text-teal-900 text-sm font-semibold py-2 mt-4 hover:bg-teal-200 hover:text-teal-800"
+          class="w-full bg-teal-100 rounded-sm text-teal-900 text-sm font-semibold py-2 mt-4 shadow-sm hover:bg-teal-200 hover:text-teal-800"
         >
           Reset
         </button>

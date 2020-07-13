@@ -5,7 +5,9 @@
   >
     <div class="max-w-screen-sm w-full h-full">
       <SiteNav v-if="showNav"></SiteNav>
-      <router-view />
+      <transition name="fade">
+        <router-view />
+      </transition>
     </div>
   </div>
 </template>
@@ -27,4 +29,12 @@ export default {
 };
 </script>
 
-<style src="./assets/css/app.css"></style>
+<style src="./assets/css/app.css">
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>

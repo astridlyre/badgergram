@@ -1,5 +1,5 @@
 <template>
-  <header class="w-full bg-gray-100 absolute inset-x-0 top-0">
+  <header class="w-full bg-gray-100 absolute inset-x-0 top-0 shadow">
     <nav class="flex justify-between items-center">
       <router-link to="/">
         <div class="ml-4 flex items-center">
@@ -16,8 +16,11 @@
               />
             </g>
           </svg>
-          <h3 class="ml-2 text-xl text-teal-600">
-            Bad<span class="text-teal-900">Badger</span>
+          <h3 class="ml-1 text-xl text-teal-600 hidden md:block">
+            bad<span class="text-teal-900">badger</span>
+          </h3>
+          <h3 class="ml-1 text-xl text-teal-600 md:hidden">
+            b<span class="text-teal-900">b</span>
           </h3>
         </div>
       </router-link>

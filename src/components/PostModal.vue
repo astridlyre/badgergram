@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="shadow">
     <div class="px-4 w-full">
-      <div class="mt-4 flex items-center">
+      <!-- <div class="mt-4 flex items-center">
         <img
           :src="userPic"
           alt="User Pic"
@@ -10,7 +10,12 @@
         <h5 class="ml-1 text-xl leading-none text-teal-900">
           {{ userName }}
         </h5>
-      </div>
+      </div> -->
+      <ProfileModal
+        :userPic="userPic"
+        :userId="userId"
+        :userName="userName"
+      ></ProfileModal>
       <span class="text-xs leading-none text-gray-500">{{
         createdOn | formatDate
       }}</span>
@@ -38,7 +43,7 @@
     <div v-else class="px-4">
       <p class="mt-4 text-gray-800">{{ postContent }}</p>
     </div>
-    <div class="px-4 flex w-full">
+    <div class="px-4 flex w-full ">
       <div
         class="mt-4 py-4 w-full border-t border-gray-300 flex justify-evenly font-semibold text-sm"
       >
@@ -114,10 +119,12 @@ import moment from "moment";
 import * as fb from "../firebase";
 import { mapState } from "vuex";
 import CommentModal from "@/components/CommentModal";
+import ProfileModal from "@/components/ProfileModal";
 
 export default {
   components: {
     CommentModal,
+    ProfileModal,
   },
   props: [
     "post",

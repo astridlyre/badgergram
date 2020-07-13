@@ -11,14 +11,14 @@
           alt="User pic"
           class="w-12 border rounded-full object-cover"
         />
-        <h5 class="ml-2 font-semibold">
-          {{ comment.userName }}
-        </h5>
         <!-- <ProfileModal></ProfileModal> -->
-        <div
-          class="mt-1 flex w-full justify-end items-center text-xs text-right leading-none text-gray-500"
-        >
-          <p>{{ comment.createdOn | formatDate }}</p>
+        <div class="ml-2 mt-1 flex flex-wrap w-full justify-start items-center">
+          <h5 class=" font-semibold w-full">
+            {{ comment.userName }}
+          </h5>
+          <p class="text-xs leading-none flex-grow text-gray-500">
+            {{ comment.createdOn | formatDate }}
+          </p>
           <a
             v-if="comment.userId == currentUser"
             @click="deleteComment(comment.id)"
@@ -30,7 +30,7 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="stroke-current text-red-800 h-4 w-4 ml-2"
+              class="stroke-current text-red-800 h-4 w-4"
             >
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
               <line x1="9" y1="9" x2="15" y2="15"></line>

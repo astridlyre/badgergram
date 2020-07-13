@@ -33,28 +33,27 @@ fb.commentsCollection.orderBy("createdOn", "asc").onSnapshot((snapshot) => {
   store.commit("setComments", commentsArray);
 });
 
-// fb.usersCollection.onSnapshot((snapshot) => {
-//   let picsArray = [];
+fb.usersCollection.onSnapshot((snapshot) => {
+  let usersArray = [];
 
-//   snapshot.forEach((doc) => {
-//     let pic = {
-//       url: doc.picUrl,
-//       id: doc.id,
-//     };
+  snapshot.forEach((doc) => {
+    let user = doc.data();
+    user.id = doc.id;
+    user.bio = doc.bio;
+    user.picUrl = doc.picUrl;
 
-//     picsArray.push(pic);
-//     console.log(picsArray);
-//   });
+    usersArray.push(user);
+  });
 
-//   store.commit("setPics", picsArray);
-// });
+  store.commit("setUsers", usersArray);
+});
 
 const store = new Vuex.Store({
   state: {
     userProfile: {},
     posts: [],
     comments: [],
-    // pics: [],
+    users: [],
   },
   mutations: {
     setUserProfile(state, val) {
@@ -66,9 +65,9 @@ const store = new Vuex.Store({
     setComments(state, val) {
       state.comments = val;
     },
-    // setPics(state, val) {
-    //   state.pics = val;
-    // },
+    setUsers(state, val) {
+      state.users = val;
+    },
   },
   actions: {
     async login({ dispatch }, form) {

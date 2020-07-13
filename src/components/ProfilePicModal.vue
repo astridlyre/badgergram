@@ -3,38 +3,49 @@ eslint-disable no-unused-vars */
 <template>
   <div class="w-full mb-4">
     <div>
-      <h4 class="text-teal-900 font-bold">Draw an Awesome Picture</h4>
+      <h4 class="text-teal-900 text-center font-bold">
+        Draw an Awesome Picture...
+      </h4>
     </div>
-    <canvas
-      id="canvas"
-      ref="canvas"
-      width="250"
-      height="250"
-      v-touch:start="handleMouseDown"
-      v-touch:end="handleMouseUp"
-      v-touch:moving="handleMouseMove"
-      @mousedown="handleMouseDown"
-      @mouseup="handleMouseUp"
-      @mousemove="handleMouseMove"
-      @mouseout="handleMouseUp"
-      style="touch-action: none;"
-    ></canvas>
-    <div class="w-full flex justify-end">
-      <p
-        v-if="success"
-        class="leading-none self-center mt-2 text-teal-600 font-semibold"
-      >
-        Saved!
-      </p>
+    <div class="w-full flex justify-center items-center relative">
+      <canvas
+        id="canvas"
+        ref="canvas"
+        width="250"
+        height="250"
+        class="border-2 border-teal-900"
+        v-touch:start="handleMouseDown"
+        v-touch:end="handleMouseUp"
+        v-touch:moving="handleMouseMove"
+        @mousedown="handleMouseDown"
+        @mouseup="handleMouseUp"
+        @mousemove="handleMouseMove"
+        @mouseout="handleMouseUp"
+        style="touch-action: none;"
+      ></canvas>
+      <transition name="fade">
+        <div
+          v-if="success"
+          class="absolute inset-0 flex justify-center items-center"
+        >
+          <p
+            class="ml-2 leading-none self-center mt-2 text-teal-600 font-semibold"
+          >
+            image saved! ^_^
+          </p>
+        </div>
+      </transition>
+    </div>
+    <div class="w-full flex justify-center">
       <button
         @click="clearCanvas()"
-        class="ml-4 mt-2 self-end px-2 py-1 bg-red-700 text-sm text-teal-100 font-semibold rounded hover:bg-red-800"
+        class="mt-2 w-20 w-self-end px-2 py-1 bg-red-700 text-sm text-gray-100 shadow-sm font-semibold rounded hover:bg-red-800"
       >
-        Clear
+        Delete
       </button>
       <button
         @click="saveCanvas()"
-        class="ml-4 mt-2 self-end px-2 py-1 bg-teal-900 text-sm text-teal-100 font-semibold rounded hover:bg-teal-800"
+        class="ml-2 w-20 mt-2 self-end px-2 py-1 bg-teal-900 text-sm text-gray-100 shadow-sm font-semibold rounded hover:bg-teal-800"
       >
         Save
       </button>
@@ -149,3 +160,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>

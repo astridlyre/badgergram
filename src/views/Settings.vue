@@ -1,67 +1,67 @@
 <template>
   <section
-    class="p-4 h-screen max-w-full bg-teal-900 flex flex-col justify-center items-center"
+    class="p-4 min-h-screen max-w-full bg-teal-900 flex justify-center items-start"
   >
-    <div class="p-4 bg-gray-100 rounded flex flex-col items-start relative">
-      <div class="flex items-center">
-        <img
-          :src="userProfile.picUrl"
-          id="profilePic"
-          alt="Current Profile Pic"
-          class="w-12 h-12 border-2 border-teal-900 rounded-full"
-        />
-        <h3 class="ml-2 w-full font-bold text-lg text-teal-900">
-          {{ userProfile.name }}
-        </h3>
+    <div
+      class="mt-20 p-4 w-full bg-gray-100 rounded flex flex-col items-start relative shadow"
+    >
+      <div class="flex w-full flex-wrap">
+        <div class="w-full flex items-center">
+          <img
+            :src="userProfile.picUrl"
+            id="profilePic"
+            alt="Current Profile Pic"
+            class="w-12 h-12 border-2 border-teal-900 rounded-full"
+          />
+          <h3 class="ml-2 font-bold text-lg text-teal-900">
+            {{ userProfile.name }}
+          </h3>
+          <transition name="fade">
+            <p
+              v-if="showSuccess"
+              class="ml-4 text-teal-600 font-semibold transition-all"
+            >
+              Profile updated!
+            </p>
+          </transition>
+        </div>
+        <button
+          @click="updateProfile()"
+          class="mt-2 self-end w-1/2 sm:w-1/4 px-2 py-1 bg-teal-900 text-sm text-gray-100 font-semibold rounded hover:bg-teal-800 shadow-sm"
+        >
+          Update Profile
+        </button>
       </div>
 
       <form @submit.prevent class="mt-4 w-full">
         <ProfilePicModal></ProfilePicModal>
-        <div class="w-full">
-          <label for="name" class="text-teal-900">Name</label>
+        <div class="w-full flex flex-col items-center">
+          <label style="width: 250px;" for="name" class="text-teal-900"
+            >Name</label
+          >
           <input
             v-model.trim="name"
             type="text"
             :placeholder="userProfile.name"
             id="name"
-            class="ml-2 form-inputtext-teal-900"
+            maxlength="25"
+            style="width: 250px"
+            class="form-input text-teal-900"
           />
+          <div class="mt-2">
+            <label for="name" class="text-teal-900">Short Bio</label>
+            <textarea
+              v-model.trim="bio"
+              class="form-textarea block w-full resize-none text-teal-900"
+              rows="3"
+              id="bio"
+              style="width: 250px;"
+              :placeholder="userProfile.bio"
+              maxlength="140"
+            ></textarea>
+          </div>
         </div>
-        <div class="mt-4 w-full">
-          <label for="name" class="text-teal-900"
-            >Bio (Max 140 characters)</label
-          >
-          <textarea
-            v-model.trim="bio"
-            class="form-textarea block w-full resize-none text-teal-900"
-            rows="3"
-            id="bio"
-            :placeholder="userProfile.bio"
-            maxlength="140"
-          ></textarea>
-        </div>
-        <!-- <div
-          class="mt-4 w-full"
-          v-for="friend in friends"
-          :key="friendId"
-        ></div> -->
       </form>
-      <div class="mt-4 w-full flex items-center justify-end">
-        <transition name="fade">
-          <p
-            v-if="showSuccess"
-            class="mr-4 text-teal-600 font-semibold transition-all"
-          >
-            Profile updated!
-          </p>
-        </transition>
-        <button
-          @click="updateProfile()"
-          class="self-end px-2 py-1 bg-teal-900 text-sm text-teal-100 font-semibold rounded hover:bg-teal-800"
-        >
-          Update Profile
-        </button>
-      </div>
     </div>
   </section>
 </template>
@@ -120,4 +120,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>
