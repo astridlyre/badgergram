@@ -53,6 +53,7 @@
               required
               class="appearance-none font-thin bg-transparent placeholder-gray-800 border-b border-b-1 border-gray-800 w-full text-teal-900 py-1 px-2 leading-tight focus:outline-none focus:border-teal-800 "
               v-model.trim="loginForm.password"
+              v-on:keyup.enter="login()"
             />
           </div>
           <div class="flex-col flex items-center justify-between py-2">
