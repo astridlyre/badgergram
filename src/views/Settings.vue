@@ -5,7 +5,7 @@
     <div class="p-4 bg-gray-100 rounded flex flex-col items-start relative">
       <div class="flex items-center">
         <img
-          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+          :src="userProfile.picUrl"
           id="profilePic"
           alt="Current Profile Pic"
           class="w-12 h-12 border-2 border-teal-900 rounded-full"
@@ -14,14 +14,6 @@
           {{ userProfile.name }}
         </h3>
       </div>
-      <transition name="fade">
-        <p
-          v-if="showSuccess"
-          class="text-teal-700 absolute inset-x-0 text-center transition-all"
-        >
-          Profile updated!
-        </p>
-      </transition>
 
       <form @submit.prevent class="mt-4 w-full">
         <ProfilePicModal></ProfilePicModal>
@@ -54,12 +46,22 @@
           :key="friendId"
         ></div> -->
       </form>
-      <button
-        @click="updatePic()"
-        class="mt-4 self-end px-2 py-1 bg-teal-900 text-sm text-teal-100 font-semibold rounded hover:bg-teal-800"
-      >
-        Update Profile
-      </button>
+      <div class="mt-4 w-full flex items-center justify-end">
+        <transition name="fade">
+          <p
+            v-if="showSuccess"
+            class="mr-4 text-teal-600 font-semibold transition-all"
+          >
+            Profile updated!
+          </p>
+        </transition>
+        <button
+          @click="updateProfile()"
+          class="self-end px-2 py-1 bg-teal-900 text-sm text-teal-100 font-semibold rounded hover:bg-teal-800"
+        >
+          Update Profile
+        </button>
+      </div>
     </div>
   </section>
 </template>
@@ -105,15 +107,11 @@ export default {
     },
     async updatePic() {
       const profilePicRef = fb.storageRef.child(`${this.currentUser}.png`);
-      // // var imgSrc = this.picUrl
 
-      await profilePicRef.getDownloadURL().then(function(url) {
-        // console.log(url);
-        // return url;
-        const img = document.getElementById("profilePic");
-        img.src = url;
+      const picUrl = await profilePicRef.getDownloadURL().then(function(url) {
+        return url;
       });
-      // this.picUrl = url;
+      this.picUrl = picUrl;
     },
   },
   created() {

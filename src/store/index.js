@@ -33,11 +33,28 @@ fb.commentsCollection.orderBy("createdOn", "asc").onSnapshot((snapshot) => {
   store.commit("setComments", commentsArray);
 });
 
+// fb.usersCollection.onSnapshot((snapshot) => {
+//   let picsArray = [];
+
+//   snapshot.forEach((doc) => {
+//     let pic = {
+//       url: doc.picUrl,
+//       id: doc.id,
+//     };
+
+//     picsArray.push(pic);
+//     console.log(picsArray);
+//   });
+
+//   store.commit("setPics", picsArray);
+// });
+
 const store = new Vuex.Store({
   state: {
     userProfile: {},
     posts: [],
     comments: [],
+    // pics: [],
   },
   mutations: {
     setUserProfile(state, val) {
@@ -49,6 +66,9 @@ const store = new Vuex.Store({
     setComments(state, val) {
       state.comments = val;
     },
+    // setPics(state, val) {
+    //   state.pics = val;
+    // },
   },
   actions: {
     async login({ dispatch }, form) {
@@ -84,7 +104,8 @@ const store = new Vuex.Store({
       await fb.usersCollection.doc(user.uid).set({
         name: form.name,
         bio: "",
-        picUrl: "",
+        picUrl: `data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==
+`,
       });
 
       // fetch user profile and set in state
@@ -98,6 +119,7 @@ const store = new Vuex.Store({
         content: post.content,
         userId: fb.auth.currentUser.uid,
         userName: state.userProfile.name,
+        userPic: state.userProfile.picUrl,
         comments: 0,
         likes: 0,
       });
@@ -147,15 +169,6 @@ const store = new Vuex.Store({
         likes: post.likesCount + 1,
       });
     },
-    // async updatePic(userId) {
-    //   const profilePicRef = fb.storageRef.child(`${userId}.png`);
-
-    //   await profilePicRef.getDownloadURL().then(function(url) {
-    //     console.log(url);
-    //     // const img = document.getElementById("profilePic");
-    //     // img.src = url;
-    //   });
-    // },
     async updateProfile({ dispatch }, user) {
       const userId = fb.auth.currentUser.uid;
       // update user object
@@ -174,6 +187,7 @@ const store = new Vuex.Store({
       postDocs.forEach((doc) => {
         fb.postsCollection.doc(doc.id).update({
           userName: user.name,
+          userPic: user.picUrl,
         });
       });
 
@@ -184,6 +198,7 @@ const store = new Vuex.Store({
       commentDocs.forEach((doc) => {
         fb.commentsCollection.doc(doc.id).update({
           userName: user.name,
+          userPic: user.picUrl,
         });
       });
     },

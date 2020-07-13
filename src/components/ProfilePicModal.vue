@@ -22,9 +22,9 @@ eslint-disable no-unused-vars */
     <div class="w-full flex justify-end">
       <p
         v-if="success"
-        class="leading-none self-center mt-2 text-teal-600 font-semibold text-xs"
+        class="leading-none self-center mt-2 text-teal-600 font-semibold"
       >
-        Successfully saved!
+        Saved!
       </p>
       <button
         @click="clearCanvas()"

@@ -14,6 +14,7 @@
             :post="post"
             :postId="post.id"
             :userName="post.userName"
+            :userPic="post.userPic"
             :createdOn="post.createdOn"
             :postContent="post.content"
             :userId="post.userId"
