@@ -103,8 +103,7 @@ const store = new Vuex.Store({
       await fb.usersCollection.doc(user.uid).set({
         name: form.name,
         bio: "",
-        picUrl: `data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==
-`,
+        picUrl: `https://firebasestorage.googleapis.com/v0/b/furrygram-65a95.appspot.com/o/default.png?alt=media&token=ed9049f6-d22f-4ff0-b951-af57c5089b87`,
       });
 
       // fetch user profile and set in state

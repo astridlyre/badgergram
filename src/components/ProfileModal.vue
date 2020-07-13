@@ -1,15 +1,13 @@
 <template>
   <div class="relative">
     <div class="mt-4 flex items-center">
-      <img
-        :src="userPic"
-        alt="User Pic"
-        class="w-12 h-12 border-2 border-teal-900 rounded-full"
-      />
       <a @click="showUserCard = true" class="cursor-pointer"
-        ><h5
-          class="ml-1 text-xl leading-none text-teal-900 hover:text-teal-600"
-        >
+        ><img
+          :src="userPic"
+          alt="User Pic"
+          class="w-12 h-12 border-2 border-teal-900 rounded-full"
+        />
+        <h5 class="ml-1 text-xl leading-none text-teal-900 hover:text-teal-600">
           {{ userName }}
         </h5></a
       >
