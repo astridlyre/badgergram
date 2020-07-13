@@ -20,27 +20,51 @@
           <p class="text-xs leading-none text-gray-500">
             {{ comment.createdOn | formatDate }}
           </p>
-          <a
+          <CommentActionsModal
             v-if="comment.userId == currentUser"
-            @click="deleteComment(comment.id)"
-            class="cursor-pointer ml-2"
-            ><svg
+            :post="post"
+            :commentId="comment.id"
+            :commentContent="comment.con"
+            v-on:editing="
+              (editing = true),
+                (commentId = comment.id),
+                (commentContent = comment.content)
+            "
+          ></CommentActionsModal>
+        </div>
+      </div>
+      <div v-if="editing">
+        <form @submit.prevent class="w-full flex items-center">
+          <textarea
+            v-model.trim="commentContent"
+            v-on:keyup.enter="updateComment()"
+            placeholder="Write a comment..."
+            class="form-textarea resize-none w-full h-10 text-sm rounded-full"
+          ></textarea>
+          <button
+            @click="updateComment()"
+            type="button"
+            class="focus:outline-none"
+          >
+            <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="none"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="stroke-current text-red-800 h-4 w-4"
+              class="ml-2 stroke-current text-teal-600 w-6 h-6 hover:text-teal-900"
             >
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="9" y1="9" x2="15" y2="15"></line>
-              <line x1="15" y1="9" x2="9" y2="15"></line></svg
-          ></a>
-        </div>
+              <polyline points="9 11 12 14 22 4"></polyline>
+              <path
+                d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+              ></path>
+            </svg>
+          </button>
+        </form>
       </div>
-      <div class="ml-10" style="width: fit-content;">
-        <p class="ml-2 px-2 bg-gray-300 rounded-lg">
+      <div v-else class="ml-8" style="width: fit-content;">
+        <p class="px-2 bg-gray-300 rounded-lg">
           {{ comment.content }}
         </p>
       </div>
@@ -49,7 +73,6 @@
       <textarea
         v-model.trim="comment"
         v-on:keyup.enter="addComment()"
-        placeholder="Write a comment..."
         class="form-textarea resize-none w-full h-10 text-sm rounded-full"
       ></textarea>
       <button @click="addComment()" type="button" class="focus:outline-none">
@@ -73,17 +96,21 @@
 <script>
 import moment from "moment";
 import { commentsCollection, postsCollection, auth } from "@/firebase";
+// import * as fb from "../firebase";
 import { mapState } from "vuex";
-// import SmallProfileModal from "@/components/SmallProfileModal";
+import CommentActionsModal from "@/components/CommentActionsModal";
 
 export default {
   components: {
-    // SmallProfileModal,
+    CommentActionsModal,
   },
   props: ["post", "currentUser", "postId"],
   data() {
     return {
       comment: "",
+      editing: false,
+      // commentContent: "",
+      // commentId: "",
     };
   },
   computed: {
@@ -116,13 +143,11 @@ export default {
 
       this.comment = "";
     },
-    async deleteComment(commentId) {
-      this.$store.dispatch("deleteComment", { commentId });
-
-      await postsCollection.doc(this.post.id).update({
-        comments: parseInt(this.post.comments) - 1,
-      });
-    },
+    // updateComment(commentId, commentContent) {
+    //   fb.commentsCollection.doc(commentId).update({
+    //     content: commentContent,
+    //   });
+    // },
   },
   filters: {
     formatDate(val) {
