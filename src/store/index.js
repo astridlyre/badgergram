@@ -102,8 +102,11 @@ const store = new Vuex.Store({
       // create user profile object
       await fb.usersCollection.doc(user.uid).set({
         name: form.name,
-        bio: "",
+        bio: "a badgerly bio",
         picUrl: `https://firebasestorage.googleapis.com/v0/b/furrygram-65a95.appspot.com/o/default.png?alt=media&token=ed9049f6-d22f-4ff0-b951-af57c5089b87`,
+        title: "a new badger",
+        gender: "badger",
+        website: "https://badbadger.netlify.app",
       });
 
       // fetch user profile and set in state
@@ -174,6 +177,9 @@ const store = new Vuex.Store({
         name: user.name,
         bio: user.bio,
         picUrl: user.picUrl,
+        title: user.title,
+        gender: user.gender,
+        website: user.website,
       });
 
       dispatch("fetchUserProfile", { uid: userId });

@@ -5,24 +5,25 @@
       :key="comment.id"
       class="comment mb-4 relative"
     >
-      <div class="flex w-full items-center">
-        <img
-          :src="comment.userPic"
-          alt="User pic"
-          class="w-12 border rounded-full object-cover"
-        />
-        <!-- <ProfileModal></ProfileModal> -->
-        <div class="ml-2 mt-1 flex flex-wrap w-full justify-start items-center">
-          <h5 class=" font-semibold w-full">
+      <div class="flex w-full items-center justify-between">
+        <router-link :to="'/user/' + comment.userId" class="flex items-center">
+          <img
+            :src="comment.userPic"
+            alt="User Pic"
+            class="w-8 h-8 border-2 border-teal-900 rounded-full"
+          />
+          <h5 class="ml-1 font-semibold leading-none text-teal-900">
             {{ comment.userName }}
           </h5>
-          <p class="text-xs leading-none flex-grow text-gray-500">
+        </router-link>
+        <div class="ml-2 flex justify-end items-center">
+          <p class="text-xs leading-none text-gray-500">
             {{ comment.createdOn | formatDate }}
           </p>
           <a
             v-if="comment.userId == currentUser"
             @click="deleteComment(comment.id)"
-            class="cursor-pointer"
+            class="cursor-pointer ml-2"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -73,8 +74,12 @@
 import moment from "moment";
 import { commentsCollection, postsCollection, auth } from "@/firebase";
 import { mapState } from "vuex";
+// import SmallProfileModal from "@/components/SmallProfileModal";
 
 export default {
+  components: {
+    // SmallProfileModal,
+  },
   props: ["post", "currentUser", "postId"],
   data() {
     return {

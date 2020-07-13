@@ -30,7 +30,7 @@
 
     <!-- Make a post section -->
     <div
-      class="flex flex-col justify-end items-center fixed bottom-0 bg-gray-100 max-w-screen-sm w-full shadow border-t"
+      class="flex flex-col justify-end items-center fixed bottom-0 bg-gray-100 max-w-screen-sm w-full shadow border-t z-50"
     >
       <div class="p-1 flex w-full justify-center items-center">
         <a @click="posterToggle()" class="cursor-pointer">

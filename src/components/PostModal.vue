@@ -1,24 +1,23 @@
 <template>
   <div class="shadow">
     <div class="px-4 w-full">
-      <!-- <div class="mt-4 flex items-center">
-        <img
-          :src="userPic"
-          alt="User Pic"
-          class="w-12 h-12 border-2 border-teal-900 rounded-full"
-        />
-        <h5 class="ml-1 text-xl leading-none text-teal-900">
-          {{ userName }}
-        </h5>
-      </div> -->
-      <ProfileModal
-        :userPic="userPic"
-        :userId="userId"
-        :userName="userName"
-      ></ProfileModal>
-      <span class="text-xs leading-none text-gray-500">{{
-        createdOn | formatDate
-      }}</span>
+      <div class="mt-4 flex items-center">
+        <router-link :to="'/user/' + userId" class="flex items-center">
+          <img
+            :src="userPic"
+            alt="User Pic"
+            class="w-12 h-12 border-2 border-teal-900 rounded-full"
+          />
+          <h5 class="ml-1 text-lg font-semibold leading-none text-teal-900">
+            {{ userName }}
+          </h5>
+        </router-link>
+        <div class="flex-grow text-right">
+          <span class="text-xs leading-none text-gray-500">{{
+            createdOn | formatDate
+          }}</span>
+        </div>
+      </div>
     </div>
     <div v-if="postContent.length > 200" class="px-4">
       <div>
@@ -119,12 +118,12 @@ import moment from "moment";
 import * as fb from "../firebase";
 import { mapState } from "vuex";
 import CommentModal from "@/components/CommentModal";
-import ProfileModal from "@/components/ProfileModal";
+// import ProfileModal from "@/components/ProfileModal";
 
 export default {
   components: {
     CommentModal,
-    ProfileModal,
+    // ProfileModal,
   },
   props: [
     "post",
@@ -148,9 +147,6 @@ export default {
     currentUser: function() {
       return fb.auth.currentUser.uid;
     },
-    // posterPic: function() {
-    //   return
-    // },
   },
   methods: {
     deletePost(id) {

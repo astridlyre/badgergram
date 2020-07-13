@@ -1,14 +1,14 @@
 <template>
-  <div class="relative">
-    <div class="mt-4">
+  <div class="relative w-full">
+    <div class="">
       <a @click="showUserCard = true" class="cursor-pointer flex items-center"
         ><img
           :src="userPic"
           alt="User Pic"
-          class="w-12 h-12 border-2 border-teal-900 rounded-full hover:border-teal-600"
+          class="w-8 h-8 border-2 border-teal-900 rounded-full hover:border-teal-600"
         />
         <h5
-          class="ml-1 text-xl font-semibold leading-none text-teal-900 hover:text-teal-600"
+          class="ml-1 font-semibold leading-none text-teal-900 hover:text-teal-600"
         >
           {{ userName }}
         </h5></a
@@ -17,7 +17,7 @@
     <transition name="fade">
       <div
         v-if="showUserCard"
-        class="p-4 w-full md:w-1/2 absolute bg-gray-100 rounded shadow-lg top-0 left-0 z-30"
+        class="p-4 absolute bg-gray-100 rounded shadow-lg top-0 left-0 z-30"
       >
         <a
           @click="showUserCard = !showUserCard"
@@ -36,10 +36,10 @@
         <div class="flex justify-center items-center w-full">
           <img :src="userPic" alt="User Pic" />
         </div>
-        <h1 class="mt-2 ml-1 text-2xl leading-none text-teal-900">
+        <h1 class="mt-2 ml-1 text-xl leading-none text-teal-900">
           Hi! I'm {{ userName }}
         </h1>
-        <p class="mt-2 p-2 bg-gray-300 rounded-lg">{{ user.bio }}</p>
+        <p class="mt-2 p-2 bg-gray-300 text-sm rounded-lg">{{ user.bio }}</p>
       </div>
     </transition>
   </div>

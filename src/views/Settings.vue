@@ -35,29 +35,62 @@
 
       <form @submit.prevent class="mt-4 w-full">
         <ProfilePicModal></ProfilePicModal>
-        <div class="w-full flex flex-col items-center">
-          <label style="width: 250px;" for="name" class="text-teal-900"
-            >Name</label
-          >
-          <input
-            v-model.trim="name"
-            type="text"
-            :placeholder="userProfile.name"
-            id="name"
-            maxlength="25"
-            style="width: 250px"
-            class="form-input text-teal-900"
-          />
-          <div class="mt-2">
+        <div
+          class="w-full flex flex-col items-center sm:flex-row sm:flex-wrap sm:justify-center sm:items-start"
+        >
+          <div class="mt-2 flex flex-col w-full sm:w-1/2">
+            <label for="name" class="text-teal-900">Name</label>
+            <input
+              v-model.trim="name"
+              type="text"
+              :placeholder="userProfile.name"
+              id="name"
+              maxlength="25"
+              class="form-input text-teal-900 sm:mr-1"
+            />
+          </div>
+          <div class="mt-2 flex flex-col w-full sm:w-1/2">
+            <label for="name" class="text-teal-900 sm:ml-1">Title</label>
+            <input
+              v-model.trim="title"
+              type="text"
+              :placeholder="userProfile.title"
+              id="name"
+              maxlength="50"
+              class="form-input text-teal-900 sm:ml-1"
+            />
+          </div>
+          <div class="mt-2 flex flex-col w-full sm:w-1/2">
+            <label for="name" class="text-teal-900">Gender</label>
+            <input
+              v-model.trim="gender"
+              type="text"
+              :placeholder="userProfile.gender"
+              id="name"
+              maxlength="25"
+              class="form-input text-teal-900 sm:mr-1"
+            />
+          </div>
+          <div class="mt-2 flex flex-col w-full sm:w-1/2">
+            <label for="name" class="text-teal-900 sm:ml-1">Website</label>
+            <input
+              v-model.trim="website"
+              type="text"
+              :placeholder="userProfile.website"
+              id="name"
+              maxlength="100"
+              class="form-input text-teal-900 sm:ml-1"
+            />
+          </div>
+          <div class="mt-2 flex flex-col w-full sm:w-1/2 sm:w-full">
             <label for="name" class="text-teal-900">Short Bio</label>
             <textarea
               v-model.trim="bio"
               class="form-textarea block w-full resize-none text-teal-900"
               rows="3"
               id="bio"
-              style="width: 250px;"
               :placeholder="userProfile.bio"
-              maxlength="140"
+              maxlength="300"
             ></textarea>
           </div>
         </div>
@@ -79,6 +112,9 @@ export default {
     return {
       name: "",
       bio: "",
+      title: "",
+      gender: "",
+      website: "",
       showSuccess: false,
       picUrl: "",
     };
@@ -95,6 +131,9 @@ export default {
         name: this.name !== "" ? this.name : this.userProfile.name,
         bio: this.bio !== "" ? this.bio : this.userProfile.bio,
         picUrl: this.picUrl !== "" ? this.picUrl : this.userProfile.picUrl,
+        title: this.title !== "" ? this.title : this.userProfile.title,
+        gender: this.gender !== "" ? this.gender : this.userProfile.gender,
+        website: this.website !== "" ? this.website : this.userProfile.website,
       });
 
       this.name = "";

@@ -1,6 +1,8 @@
 <template>
-  <header class="w-full bg-gray-100 absolute inset-x-0 top-0 shadow">
-    <nav class="flex justify-between items-center">
+  <header
+    class="w-full bg-gray-100 flex justify-center fixed inset-x-0 top-0 shadow z-50"
+  >
+    <nav class="flex w-full md:max-w-screen-sm justify-between items-center">
       <router-link to="/">
         <div class="ml-4 flex items-center">
           <svg
@@ -25,16 +27,21 @@
         </div>
       </router-link>
       <div class="flex justify-end items-center mr-4">
-        <router-link to="/settings"
-          ><a class="px-4"
-            ><span class="text-teal-900 font-semibold">{{
+        <router-link :to="currentUserPath"
+          ><a class="px-4 flex">
+            <img
+              :src="userProfile.picUrl"
+              alt="User Pic"
+              class="w-6 h-6 rounded-full border-2 border-teal-900"
+            />
+            <span class="ml-2 text-teal-900 font-semibold">{{
               userProfile.name
             }}</span></a
           ></router-link
         >
-        <router-link to="/">
-          <a class="px-4"
-            ><svg
+        <router-link to="/settings">
+          <a class="px-4">
+            <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="none"
@@ -43,8 +50,10 @@
               stroke-linejoin="round"
               class="stroke-current text-teal-900 h-6 w-6"
             >
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-              <polyline points="9 22 9 12 15 12 15 22"></polyline></svg
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+              ></path></svg
           ></a>
         </router-link>
         <a @click="logout()" class="pl-4 flex items-center cursor-pointer">
@@ -68,10 +77,14 @@
 
 <script>
 import { mapState } from "vuex";
+import { auth } from "@/firebase";
 
 export default {
   computed: {
     ...mapState(["userProfile"]),
+    currentUserPath: function() {
+      return `/user/${auth.currentUser.uid}`;
+    },
   },
   methods: {
     logout() {
