@@ -73,7 +73,7 @@
                 v-model.trim="post.content"
                 class="form-textarea mt-1 block w-full resize-none"
                 rows="3"
-                placeholder="What's on your mind?"
+                :placeholder="placeholderText"
               ></textarea>
               <button
                 @click="createPost()"
@@ -115,6 +115,9 @@ export default {
     ...mapState(["userProfile", "posts"]),
     currentUser: function() {
       return fb.auth.currentUser.uid;
+    },
+    placeholderText: function() {
+      return `What treats do you have in store for us today, ${this.userProfile.name}?`;
     },
   },
   methods: {
