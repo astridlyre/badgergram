@@ -3,7 +3,7 @@ eslint-disable no-unused-vars */
 <template>
   <div class="w-full mb-4">
     <div>
-      <h4 class="text-teal-900 font-bold">Draw an Awesome Picture?</h4>
+      <h4 class="text-teal-900 font-bold">Draw an Awesome Picture</h4>
     </div>
     <canvas
       id="canvas"

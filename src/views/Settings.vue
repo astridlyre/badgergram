@@ -3,8 +3,17 @@
     class="p-4 h-screen max-w-full bg-teal-900 flex flex-col justify-center items-center"
   >
     <div class="p-4 bg-gray-100 rounded flex flex-col items-start relative">
-      <h3 class="mt-4 w-full font-bold text-lg text-teal-900">Settings</h3>
-
+      <div class="flex items-center">
+        <img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+          id="profilePic"
+          alt="Current Profile Pic"
+          class="w-12 h-12 border-2 border-teal-900 rounded-full"
+        />
+        <h3 class="ml-2 w-full font-bold text-lg text-teal-900">
+          {{ userProfile.name }}
+        </h3>
+      </div>
       <transition name="fade">
         <p
           v-if="showSuccess"
@@ -46,7 +55,7 @@
         ></div> -->
       </form>
       <button
-        @click="updateProfile()"
+        @click="updatePic()"
         class="mt-4 self-end px-2 py-1 bg-teal-900 text-sm text-teal-100 font-semibold rounded hover:bg-teal-800"
       >
         Update Profile
@@ -57,6 +66,7 @@
 
 <script>
 import { mapState } from "vuex";
+import * as fb from "../firebase";
 import ProfilePicModal from "@/components/ProfilePicModal";
 
 export default {
@@ -67,12 +77,15 @@ export default {
     return {
       name: "",
       bio: "",
-      picUrl: "",
       showSuccess: false,
+      picUrl: "",
     };
   },
   computed: {
     ...mapState(["userProfile"]),
+    currentUser: function() {
+      return fb.auth.currentUser.uid;
+    },
   },
   methods: {
     updateProfile() {
@@ -90,6 +103,21 @@ export default {
         this.showSuccess = false;
       }, 2000);
     },
+    async updatePic() {
+      const profilePicRef = fb.storageRef.child(`${this.currentUser}.png`);
+      // // var imgSrc = this.picUrl
+
+      await profilePicRef.getDownloadURL().then(function(url) {
+        // console.log(url);
+        // return url;
+        const img = document.getElementById("profilePic");
+        img.src = url;
+      });
+      // this.picUrl = url;
+    },
+  },
+  created() {
+    this.updatePic();
   },
 };
 </script>
