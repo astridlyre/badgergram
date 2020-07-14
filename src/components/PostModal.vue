@@ -214,7 +214,7 @@
 
 <script>
 import moment from "moment";
-import * as fb from "../firebase";
+import { postsCollection } from "@/firebase";
 import { mapState } from "vuex";
 import CommentModal from "@/components/CommentModal";
 import PostActionsModal from "@/components/PostActionsModal";
@@ -264,7 +264,7 @@ export default {
       }
     },
     updatePost(postId, postContent) {
-      fb.postsCollection.doc(postId).update({
+      postsCollection.doc(postId).update({
         content: postContent,
       });
     },

@@ -105,7 +105,6 @@ import {
   auth,
   incrementPlus,
 } from "@/firebase";
-import * as fb from "../firebase";
 import { mapState } from "vuex";
 import CommentActionsModal from "@/components/CommentActionsModal";
 
@@ -156,7 +155,7 @@ export default {
       if (this.editingContent == "") {
         return;
       }
-      fb.commentsCollection.doc(commentId).update({
+      commentsCollection.doc(commentId).update({
         content: this.editingContent,
       });
     },

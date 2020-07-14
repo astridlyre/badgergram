@@ -161,26 +161,32 @@ export default {
       if (reactionType === "like") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            // eslint-disable-next-line no-undef
             likes: incrementPlus,
+            // likes: this.post.reactions.likes + 1,
+            nopes: this.post.reactions.nopes,
+            loves: this.post.reactions.loves,
           },
         });
-      }
-      if (reactionType === "nope") {
+      } else if (reactionType === "nope") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            // eslint-disable-next-line no-undef
             nopes: incrementPlus,
+            // nopes: this.post.reactions.nopes + 1,
+            likes: this.post.reactions.likes,
+            loves: this.post.reactions.loves,
           },
         });
-      }
-      if (reactionType === "love") {
+      } else if (reactionType === "love") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            // eslint-disable-next-line no-undef
             loves: incrementPlus,
+            // loves: this.post.reactions.loves + 1,
+            likes: this.post.reactions.likes,
+            nopes: this.post.reactions.nopes,
           },
         });
+      } else {
+        return;
       }
     },
     async changeReaction() {
@@ -197,6 +203,7 @@ export default {
           reactions: {
             likes: incrementMinus,
             nopes: incrementPlus,
+            loves: this.post.reactions.loves,
           },
         });
       } else if (currentReact === "like" && this.reactionType === "love") {
@@ -204,6 +211,7 @@ export default {
           reactions: {
             likes: incrementMinus,
             loves: incrementPlus,
+            nopes: this.post.reactions.nopes,
           },
         });
       } else if (currentReact === "nope" && this.reactionType === "like") {
@@ -211,6 +219,7 @@ export default {
           reactions: {
             nopes: incrementMinus,
             likes: incrementPlus,
+            loves: this.post.reactions.loves,
           },
         });
       } else if (currentReact === "nope" && this.reactionType === "love") {
@@ -218,6 +227,7 @@ export default {
           reactions: {
             nopes: incrementMinus,
             loves: incrementPlus,
+            likes: this.post.reactions.likes,
           },
         });
       } else if (currentReact === "love" && this.reactionType === "like") {
@@ -225,6 +235,7 @@ export default {
           reactions: {
             loves: incrementMinus,
             likes: incrementPlus,
+            nopes: this.post.reactions.nopes,
           },
         });
       } else if (currentReact === "love" && this.reactionType === "nope") {
@@ -232,6 +243,7 @@ export default {
           reactions: {
             loves: incrementMinus,
             nopes: incrementPlus,
+            likes: this.post.reactions.likes,
           },
         });
       } else {
