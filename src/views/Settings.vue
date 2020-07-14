@@ -41,7 +41,7 @@
       </div>
 
       <form @submit.prevent class="mt-4 w-full">
-        <ProfilePicModal></ProfilePicModal>
+        <ProfilePicModal v-on:update-pic="updatePic()"></ProfilePicModal>
         <div
           class="w-full flex flex-col items-center sm:flex-row sm:flex-wrap sm:justify-center sm:items-start"
         >
@@ -131,7 +131,6 @@ export default {
       gender: "",
       website: "",
       showSuccess: false,
-      picUrl: "",
       // friends: [],
     };
   },

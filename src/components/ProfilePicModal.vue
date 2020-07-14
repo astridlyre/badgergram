@@ -44,7 +44,7 @@ eslint-disable no-unused-vars */
         Delete
       </button>
       <button
-        @click="saveCanvas()"
+        @click="saveCanvas(), $emit('update-pic')"
         class="ml-2 w-20 mt-2 self-end px-2 py-1 bg-teal-900 text-sm text-gray-100 shadow-sm font-semibold rounded hover:bg-teal-800"
       >
         Save
