@@ -34,7 +34,7 @@
         <div class="w-full flex items-center justify-center">
           <h1 class="text-3xl text-center text-teal-900">Sign In</h1>
         </div>
-        <form class="w-full mt-4" @submit.prevent>
+        <form class="w-full mt-4" @submit.prevent="login()">
           <div class="flex items-center py-2 w-full">
             <input
               type="text"
@@ -73,9 +73,8 @@
           </div>
           <button
             class="w-full bg-teal-900 rounded text-gray-100 text-sm font-semibold py-2 mt-2 shadow-sm hover:bg-teal-800"
-            type="button"
+            type="submit"
             @click="login()"
-            v-on:keyup.enter="login()"
           >
             Sign In
           </button>
@@ -117,7 +116,7 @@
           <div class="">
             <h1 class="text-3xl text-center">Get Started</h1>
           </div>
-          <form @submit.prevent class="w-full mt-8">
+          <form @submit.prevent="signup()" class="w-full mt-8">
             <div class="flex items-center py-2">
               <label for="name" class="w-full">
                 <input
@@ -169,7 +168,7 @@
             <button
               @click="signup()"
               v-on:keyup.enter="signup()"
-              type="button"
+              type="submit"
               class="mt-8 w-full bg-teal-100 rounded-sm text-teal-900 text-sm font-semibold py-2 mt-4 shadow-sm hover:bg-teal-200 hover:text-teal-800"
             >
               Sign Up

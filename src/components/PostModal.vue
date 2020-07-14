@@ -156,6 +156,7 @@
         ></ReactionsModal>
         <button
           type="button"
+          @click="$refs.makeAComment.focus()"
           class="flex w-1/3 justify-center items-center cursor-pointer text-sm px-2 py-4 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
         >
           <svg
@@ -203,18 +204,56 @@
         ></PostActionsModal>
       </div>
     </div>
-    <CommentModal
-      :post="post"
-      :postId="postId"
-      :currentUser="currentUser"
-      :postComments="postComments"
-    ></CommentModal>
+    <div class="px-4 text-gray-900 bg-gray-100 w-full">
+      <div v-for="comment in postComments" :key="comment.id" class="">
+        <CommentModal
+          :comment="comment"
+          :userId="comment.userId"
+          :userPic="comment.userPic"
+          :userName="comment.userName"
+          :createdOn="comment.createdOn"
+          :commentId="comment.id"
+          :commentContent="comment.content"
+          :currentUser="currentUser"
+        ></CommentModal>
+      </div>
+    </div>
+    <!-- Make a comment -->
+    <div class="p-4 text-gray-900 bg-gray-100 w-full">
+      <form @submit.prevent class="w-full flex items-center">
+        <textarea
+          ref="makeAComment"
+          v-model.trim="commentContent"
+          v-on:keyup.enter="addComment()"
+          class="hide-scrollbar form-textarea resize-none w-full h-10 text-sm rounded-full"
+        ></textarea>
+        <button @click="addComment()" type="button" class="focus:outline-none">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="ml-2 stroke-current text-teal-600 w-6 h-6 hover:text-teal-900"
+          >
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
 import moment from "moment";
-import { postsCollection } from "@/firebase";
+import {
+  postsCollection,
+  commentsCollection,
+  auth,
+  incrementPlus,
+} from "@/firebase";
 import { mapState } from "vuex";
 import CommentModal from "@/components/CommentModal";
 import PostActionsModal from "@/components/PostActionsModal";
@@ -233,7 +272,6 @@ export default {
     "userPic",
     "createdOn",
     "postContent",
-    "postComments",
     "userId",
     "postReactions",
     "currentUser",
@@ -244,13 +282,17 @@ export default {
       showFullPost: false,
       editing: false,
       editedContent: this.postContent,
+      commentContent: "",
     };
   },
   computed: {
-    ...mapState(["userProfile", "posts"]),
-    // currentUser: function() {
-    //   return fb.auth.currentUser.uid;
-    // },
+    ...mapState(["userProfile", "posts", "comments"]),
+    postComments: function() {
+      let currentPost = this.post.id;
+      return this.comments.filter(function(comment) {
+        return comment.postId === currentPost;
+      });
+    },
   },
   methods: {
     // likePost(id, postLikes) {
@@ -267,6 +309,26 @@ export default {
       postsCollection.doc(postId).update({
         content: postContent,
       });
+    },
+    async addComment() {
+      if (this.commentContent == "") {
+        return;
+      }
+      // create a comment
+      await commentsCollection.add({
+        createdOn: new Date(),
+        content: this.commentContent,
+        postId: this.post.id,
+        userId: auth.currentUser.uid,
+        userName: this.$store.state.userProfile.name,
+        userPic: this.$store.state.userProfile.picUrl,
+      });
+      // update comment count on post
+      await postsCollection.doc(this.post.id).update({
+        comments: incrementPlus,
+      });
+
+      this.commentContent = "";
     },
   },
   filters: {

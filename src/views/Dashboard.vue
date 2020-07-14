@@ -34,7 +34,11 @@
       class="flex flex-col justify-end items-center fixed bottom-0 bg-gray-100 max-w-screen-sm w-full shadow border-t z-50"
     >
       <div class="p-1 flex w-full justify-center items-center">
-        <a @click="posterToggle()" class="cursor-pointer">
+        <button
+          type="button"
+          @click="posterToggle(), focus()"
+          class="cursor-pointer focus:outline-none hover:bg-gray-200 focus:bg-gray-200 px-4"
+        >
           <svg
             v-if="!posterVisible"
             xmlns="http://www.w3.org/2000/svg"
@@ -63,29 +67,29 @@
             class="h-6 w-6 stroke-current text-teal-900"
           >
             <line x1="12" y1="5" x2="12" y2="19"></line>
-            <polyline points="19 12 12 19 5 12"></polyline></svg
-        ></a>
+            <polyline points="19 12 12 19 5 12"></polyline>
+          </svg>
+        </button>
       </div>
       <transition name="slide-fade">
         <div v-show="posterVisible" class="px-4 mb-4 w-full">
-          <div class="">
-            <form @submit.prevent>
-              <textarea
-                v-model.trim="post.content"
-                class="hide-scrollbar form-textarea mt-1 block w-full resize-none"
-                rows="3"
-                :placeholder="placeholderText"
-              ></textarea>
-              <button
-                @click="createPost()"
-                :disabled="post.content === ''"
-                type="button"
-                class="py-2 mt-2 w-full bg-teal-900 rounded text-teal-100 text-sm font-bold hover:bg-teal-800"
-              >
-                Post
-              </button>
-            </form>
-          </div>
+          <form @submit.prevent>
+            <textarea
+              ref="makeAPost"
+              v-model.trim="post.content"
+              class="hide-scrollbar form-textarea mt-1 block w-full resize-none"
+              rows="3"
+              :placeholder="placeholderText"
+            ></textarea>
+            <button
+              @click="createPost()"
+              :disabled="post.content === ''"
+              type="button"
+              class="py-2 mt-2 w-full bg-teal-900 rounded text-teal-100 text-sm font-bold hover:bg-teal-800 focus:bg-teal-800"
+            >
+              Post
+            </button>
+          </form>
         </div>
       </transition>
     </div>
@@ -127,10 +131,11 @@ export default {
   methods: {
     posterToggle() {
       this.posterVisible = !this.posterVisible;
+      this.post.content = "";
     },
     createPost() {
       this.$store.dispatch("createPost", { content: this.post.content });
-      this.post.content = "";
+      // this.post.content = "";
       this.posterToggle();
     },
     deletePost(id) {
@@ -142,6 +147,11 @@ export default {
       } else {
         return false;
       }
+    },
+    focus() {
+      setTimeout(() => {
+        this.$refs.makeAPost.focus();
+      }, 250);
     },
   },
   filters: {

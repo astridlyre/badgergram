@@ -1,99 +1,72 @@
 <template>
-  <div class="p-4 text-gray-900 bg-gray-100 w-full">
-    <div
-      v-for="comment in postComments"
-      :key="comment.id"
-      class="comment mb-4 relative"
-    >
-      <div class="flex w-full items-center justify-between">
-        <router-link :to="'/user/' + comment.userId" class="flex items-center">
-          <img
-            :src="comment.userPic"
-            alt=""
-            class="w-8 h-8 border-2 border-teal-900 rounded-full"
-          />
-          <h5 class="ml-1 font-semibold leading-none text-teal-900">
-            {{ comment.userName }}
-          </h5>
-        </router-link>
-        <div class="ml-2 flex justify-end items-center">
-          <p class="text-xs leading-none text-gray-500">
-            {{ comment.createdOn | formatDate }}
-          </p>
-          <CommentActionsModal
-            v-if="comment.userId == currentUser"
-            :post="post"
-            :commentId="comment.id"
-            :commentContent="comment.con"
-            v-on:editing="
-              (editing = true),
-                (commentId = comment.id),
-                (editingContent = comment.content)
-            "
-          ></CommentActionsModal>
-        </div>
-      </div>
-      <div v-if="editing">
-        <div
-          v-if="editing"
-          @click="editing = false"
-          class="fixed z-0 inset-0 w-screen h-screen"
-        ></div>
-        <form @submit.prevent class="w-full flex items-center">
-          <textarea
-            v-model.trim="editingContent"
-            placeholder="Write a comment..."
-            class="hide-scrollbar z-30 form-textarea resize-none w-full h-10 text-sm rounded-full"
-          ></textarea>
-          <button
-            @click="updateComment(commentId, editingContent), (editing = false)"
-            type="button"
-            class="focus:outline-none z-30"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="ml-2 stroke-current text-teal-600 w-6 h-6 hover:text-teal-900"
-            >
-              <polyline points="9 11 12 14 22 4"></polyline>
-              <path
-                d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
-              ></path>
-            </svg>
-          </button>
-        </form>
-      </div>
-      <div v-else class="ml-8" style="width: fit-content;">
-        <p class="px-2 bg-gray-300 rounded-lg">
-          {{ comment.content }}
+  <div>
+    <div class="flex w-full items-center justify-between">
+      <router-link :to="'/user/' + comment.userId" class="flex items-center">
+        <img
+          :src="comment.userPic"
+          alt=""
+          class="w-8 h-8 border-2 border-teal-900 rounded-full"
+        />
+        <h5 class="ml-1 font-semibold leading-none text-teal-900">
+          {{ comment.userName }}
+        </h5>
+      </router-link>
+      <div class="ml-2 flex justify-end items-center">
+        <p class="text-xs leading-none text-gray-500">
+          {{ comment.createdOn | formatDate }}
         </p>
+        <CommentActionsModal
+          v-if="comment.userId == currentUser"
+          :post="post"
+          :commentId="comment.id"
+          :commentContent="comment.content"
+          v-on:editing="
+            (editing = true),
+              (commentId = comment.id),
+              (editingContent = comment.content)
+          "
+        ></CommentActionsModal>
       </div>
     </div>
-    <form @submit.prevent class="w-full flex items-center">
-      <textarea
-        v-model.trim="commentContent"
-        v-on:keyup.enter="addComment()"
-        class="hide-scrollbar form-textarea resize-none w-full h-10 text-sm rounded-full"
-      ></textarea>
-      <button @click="addComment()" type="button" class="focus:outline-none">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="ml-2 stroke-current text-teal-600 w-6 h-6 hover:text-teal-900"
+    <div v-if="editing">
+      <div
+        v-if="editing"
+        @click="editing = false"
+        class="fixed z-0 inset-0 w-screen h-screen"
+      ></div>
+      <form @submit.prevent class="w-full flex items-center">
+        <textarea
+          v-model.trim="editingContent"
+          placeholder="Write a comment..."
+          class="hide-scrollbar z-30 form-textarea resize-none w-full h-10 text-sm rounded-full"
+        ></textarea>
+        <button
+          @click="updateComment(commentId, editingContent), (editing = false)"
+          type="button"
+          class="focus:outline-none z-30"
         >
-          <line x1="22" y1="2" x2="11" y2="13"></line>
-          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-        </svg>
-      </button>
-    </form>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="ml-2 stroke-current text-teal-600 w-6 h-6 hover:text-teal-900"
+          >
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path
+              d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+            ></path>
+          </svg>
+        </button>
+      </form>
+    </div>
+    <div v-else class="ml-8" style="width: fit-content;">
+      <p class="px-2 bg-gray-300 rounded-lg">
+        {{ comment.content }}
+      </p>
+    </div>
   </div>
 </template>
 
@@ -112,7 +85,7 @@ export default {
   components: {
     CommentActionsModal,
   },
-  props: ["post", "currentUser", "postId"],
+  props: ["post", "currentUser", "postId", "comment"],
   data() {
     return {
       editingContent: "",
