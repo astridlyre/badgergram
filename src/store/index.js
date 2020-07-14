@@ -154,48 +154,6 @@ const store = new Vuex.Store({
 
       await fb.commentsCollection.doc(docId).delete();
     },
-    // eslint-disable-next-line no-unused-vars
-    // async reactToPost({ commit }, post) {
-    //   const userId = fb.auth.currentUser.uid;
-    //   const docId = `${userId}_${post.id}`;
-    //   const reactType = react;
-    //   console.log(reactType);
-
-    //   //check if user has liked post
-    //   const doc = await fb.reactionsCollection.doc(docId).get();
-    //   if (doc.exists) {
-    //     return;
-    //   }
-    //   // create post
-    //   await fb.reactionsCollection.doc(docId).set({
-    //     postId: post.id,
-    //     userId: userId,
-    //     reaction: reactType,
-    //   });
-
-    //   // update post likes count
-    //   if (reactType === "like") {
-    //     fb.postsCollection.doc(post.id).update({
-    //       reactions: {
-    //         likes: post.likesCount + 1,
-    //       },
-    //     });
-    //   } else if (reactType === "nope") {
-    //     fb.postsCollection.doc(post.id).update({
-    //       reactions: {
-    //         nopes: post.nopesCount + 1,
-    //       },
-    //     });
-    //   } else if (reactType === "love") {
-    //     fb.postsCollection.doc(post.id).update({
-    //       reactions: {
-    //         loves: post.lovesCount + 1,
-    //       },
-    //     });
-    //   } else {
-    //     return;
-    //   }
-    // },
     async updateProfile({ dispatch }, user) {
       const userId = fb.auth.currentUser.uid;
       // update user object

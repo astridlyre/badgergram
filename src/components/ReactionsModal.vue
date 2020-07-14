@@ -34,7 +34,9 @@
           <li class="sm:w-1/3 order-3 sm:order-first flex">
             <button
               type="button"
-              @click="reactToPost(love), (showReactions = false)"
+              @click="
+                (reactionType = 'love'), reactToPost(), (showReactions = false)
+              "
               class="w-full flex justify-center items-center cursor-pointer text-sm px-2 py-4 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
             >
               <svg
@@ -57,7 +59,9 @@
           <li class="sm:w-1/3 flex">
             <button
               type="button"
-              @click="reactToPost(like), (showReactions = false)"
+              @click="
+                (reactionType = 'like'), reactToPost(), (showReactions = false)
+              "
               class="w-full flex justify-center items-center cursor-pointer text-sm px-2 py-4 w-full rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
             >
               <svg
@@ -80,7 +84,9 @@
           <li class="sm:w-1/3 flex">
             <button
               type="button"
-              @click="reactToPost(nope), (showReactions = false)"
+              @click="
+                (reactionType = 'nope'), reactToPost(), (showReactions = false)
+              "
               class="w-full flex justify-center items-center cursor-pointer text-sm px-2 py-4 w-full rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
             >
               <svg
@@ -115,50 +121,115 @@ export default {
     return {
       showReactions: false,
       reactionType: "",
-      like: "like",
-      love: "love",
-      nope: "nope",
     };
   },
+  computed: {
+    currentUser: function() {
+      return auth.currentUser.uid;
+    },
+
+    docId: function() {
+      return `${this.currentUser}_${this.post.id}`;
+    },
+  },
+
   methods: {
     // reactToPost(id, react) {
     //   this.$store.dispatch("reactToPost", { id, react });
     // },
-    async reactToPost(react) {
-      const userId = auth.currentUser.uid;
-      const docId = `${userId}_${this.post.id}`;
-      const reactType = react;
-      console.log(reactType);
+    async reactToPost() {
+      const reactionType = this.reactionType;
 
       //check if user has liked post
-      const doc = await reactionsCollection.doc(docId).get();
+      const doc = await reactionsCollection.doc(this.docId).get();
       if (doc.exists) {
         return;
       }
       // create reaction
-      await reactionsCollection.doc(docId).set({
+      await reactionsCollection.doc(this.docId).set({
         postId: this.post.id,
-        userId: userId,
-        reaction: reactType,
+        userId: this.currentUser,
+        reaction: reactionType,
       });
 
       // update post likes count
-      if (reactType === "like") {
-        postsCollection.doc(this.post.id).update({
+      if (reactionType === "like") {
+        await postsCollection.doc(this.post.id).update({
           reactions: {
-            likes: this.post.reactions.likes + 1,
+            likes: parseInt(this.post.reactions.likes) + 1,
           },
         });
-      } else if (reactType === "nope") {
-        postsCollection.doc(this.post.id).update({
+      } else if (reactionType === "nope") {
+        await postsCollection.doc(this.post.id).update({
+          reactions: {
+            nopes: parseInt(this.post.reactions.nopes) + 1,
+          },
+        });
+      } else if (reactionType === "love") {
+        await postsCollection.doc(this.post.id).update({
+          reactions: {
+            loves: parseInt(this.post.reactions.loves) + 1,
+          },
+        });
+      } else {
+        return;
+      }
+    },
+    async changeReaction() {
+      const futureReactType = this.reactionType;
+      const ref = await reactionsCollection.doc(this.docId).get();
+      const reactionObj = ref.data();
+      const currentReact = reactionObj.reaction;
+      console.log(currentReact, futureReactType);
+
+      await reactionsCollection.doc(this.docId).update({
+        reaction: futureReactType,
+      });
+
+      console.log(parseInt(this.post.reactions.nopes) - 1);
+
+      // remove previous reaction
+
+      if (currentReact === "like" && futureReactType === "nope") {
+        await postsCollection.doc(this.post.id).update({
           reactions: {
             nopes: this.post.reactions.nopes + 1,
+            likes: this.post.reactions.likes - 1,
           },
         });
-      } else if (reactType === "love") {
-        postsCollection.doc(this.post.id).update({
+      } else if (currentReact === "nope" && futureReactType === "like") {
+        await postsCollection.doc(this.post.id).update({
+          reactions: {
+            likes: this.post.reactions.likes + 1,
+            nopes: this.post.reactions.nopes - 1,
+          },
+        });
+      } else if (currentReact === "love" && futureReactType === "like") {
+        await postsCollection.doc(this.post.id).update({
+          reactions: {
+            likes: this.post.reactions.likes + 1,
+            loves: this.post.reactions.loves - 1,
+          },
+        });
+      } else if (currentReact === "like" && futureReactType === "love") {
+        await postsCollection.doc(this.post.id).update({
           reactions: {
             loves: this.post.reactions.loves + 1,
+            likes: this.post.reactions.likes - 1,
+          },
+        });
+      } else if (currentReact === "nope" && futureReactType === "love") {
+        await postsCollection.doc(this.post.id).update({
+          reactions: {
+            loves: this.post.reactions.loves + 1,
+            nopes: this.post.reactions.nopes - 1,
+          },
+        });
+      } else if (currentReact === "love" && futureReactType === "nope") {
+        await postsCollection.doc(this.post.id).update({
+          reactions: {
+            nopes: this.post.reactions.nopes + 1,
+            loves: this.post.reactions.loves - 1,
           },
         });
       } else {
