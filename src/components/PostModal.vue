@@ -68,14 +68,95 @@
       <div v-else class="px-4">
         <p class="mt-4 text-gray-800">{{ postContent }}</p>
       </div>
+      <div class="flex w-full">
+        <div v-if="postReactions.loves > 0" class="ml-4 mt-2 flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="stroke-current text-red-700 h-4 w-4"
+          >
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+            ></path>
+          </svg>
+          <span class="ml-2 font-semibold text-red-700 text-sm">{{
+            postReactions.loves
+          }}</span>
+        </div>
+        <div v-if="postReactions.likes > 0" class="ml-4 mt-2 flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="stroke-current text-gray-800 h-4 w-4"
+          >
+            <path
+              d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+            ></path>
+          </svg>
+          <span class="ml-2 font-semibold text-sm">{{
+            postReactions.likes
+          }}</span>
+        </div>
+        <div v-if="postReactions.nopes > 0" class="ml-4 mt-2 flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="stroke-current text-gray-800 h-4 w-4"
+          >
+            <path
+              d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"
+            ></path>
+          </svg>
+          <span class="ml-2 font-semibold text-sm">{{
+            postReactions.nopes
+          }}</span>
+        </div>
+        <div v-if="postComments > 0" class="ml-4 mt-2 flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="stroke-current text-gray-800 h-4 w-4"
+          >
+            <path
+              d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+            ></path>
+          </svg>
+          <span class="ml-2 font-semibold text-gray-800 text-sm">{{
+            postComments
+          }}</span>
+        </div>
+      </div>
     </div>
     <div class=" flex w-full ">
       <div
-        class="mt-4 py-1 w-full border-t border-gray-300 flex justify-evenly"
+        class="mt-4 py-1 w-full border-t border-gray-300 flex justify-center"
       >
+        <ReactionsModal
+          :post="post"
+          :postId="postId"
+          :postLikes="postReactions.likes"
+          :postNopes="postReactions.nopes"
+          :postLoves="postReactions.loves"
+        ></ReactionsModal>
         <button
           type="button"
-          class="flex items-center cursor-pointer text-sm p-4 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+          class="flex w-1/3 justify-center items-center cursor-pointer text-sm px-2 py-4 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -90,15 +171,13 @@
               d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
             ></path>
           </svg>
-          <span class="ml-1 font-semibold text-gray-800"
-            >Comments {{ postComments }}</span
-          >
+          <span class="ml-2 font-semibold text-gray-800">Comment</span>
         </button>
 
-        <button
+        <!-- <button
           type="button"
           @click="likePost(postId, postLikes)"
-          class="flex items-center cursor-pointer text-sm p-4 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+          class="flex items-center cursor-pointer text-sm px-2 py-4 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -113,10 +192,10 @@
               d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
             ></path>
           </svg>
-          <span class="ml-1 font-semibold text-gray-800"
-            >Likes {{ postLikes }}</span
+          <span class="ml-2 font-semibold text-gray-800"
+            >Like {{ postLikes }}</span
           >
-        </button>
+        </button> -->
         <PostActionsModal
           v-if="isPostMine(userId)"
           v-bind="$props"
@@ -139,11 +218,13 @@ import * as fb from "../firebase";
 import { mapState } from "vuex";
 import CommentModal from "@/components/CommentModal";
 import PostActionsModal from "@/components/PostActionsModal";
+import ReactionsModal from "@/components/ReactionsModal";
 
 export default {
   components: {
     CommentModal,
     PostActionsModal,
+    ReactionsModal,
   },
   props: [
     "post",
@@ -152,9 +233,10 @@ export default {
     "userPic",
     "createdOn",
     "postContent",
-    "userId",
     "postComments",
-    "postLikes",
+    "userId",
+    "postReactions",
+    "currentUser",
   ],
   data() {
     return {
@@ -166,14 +248,14 @@ export default {
   },
   computed: {
     ...mapState(["userProfile", "posts"]),
-    currentUser: function() {
-      return fb.auth.currentUser.uid;
-    },
+    // currentUser: function() {
+    //   return fb.auth.currentUser.uid;
+    // },
   },
   methods: {
-    likePost(id, likesCount) {
-      this.$store.dispatch("likePost", { id, likesCount });
-    },
+    // likePost(id, postLikes) {
+    //   this.$store.dispatch("likePost", { id, postLikes });
+    // },
     isPostMine(userId) {
       if (userId == `${this.currentUser}`) {
         return true;

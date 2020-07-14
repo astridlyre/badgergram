@@ -19,7 +19,8 @@
             :postContent="post.content"
             :userId="post.userId"
             :postComments="post.comments"
-            :postLikes="post.likes"
+            :postReactions="post.reactions"
+            :currentUser="currentUser"
           ></PostModal>
         </div>
       </div>
@@ -109,6 +110,9 @@ export default {
         content: "",
       },
       postComments: [],
+      // postId: this.post.id,
+      // userName: this.post.authorId,
+      // userPic: this.post.userPic,
     };
   },
   computed: {
@@ -131,9 +135,6 @@ export default {
     },
     deletePost(id) {
       this.$store.dispatch("deletePost", { id });
-    },
-    likePost(id, likesCount) {
-      this.$store.dispatch("likePost", { id, likesCount });
     },
     isPostMine(userId) {
       if (userId == `${this.currentUser}`) {

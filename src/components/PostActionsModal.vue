@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-1/3">
     <div
       v-if="showActions"
       @click="showActions = false"
@@ -9,7 +9,7 @@
       <button
         type="button"
         @click="showActions = true"
-        class="w-full flex items-center cursor-pointer text-sm p-4 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+        class="w-full justify-center flex items-center cursor-pointer text-sm py-4 px-2 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -28,13 +28,13 @@
       <transition name="fade">
         <ul
           v-if="showActions"
-          class="flex flex-col absolute top-0 -mt-1 shadow rounded z-30 bg-gray-100 py-1"
+          class="flex flex-col sm:flex-row absolute top-0 left-0 right-0 sm:bottom-0 -mt-1 shadow rounded z-30 bg-gray-100 py-1"
         >
-          <li class="">
+          <li class="sm:hidden">
             <button
               type="button"
               @click="showActions = false"
-              class="w-full flex items-center cursor-pointer text-sm p-4 rounded bg-gray-200 bg-gray-200 focus:outline-none"
+              class="w-full justify-center flex items-center cursor-pointer text-sm px-2 py-4 rounded bg-gray-200 bg-gray-200 focus:outline-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -51,11 +51,11 @@
               ><span class="ml-2 font-semibold text-gray-800">More</span>
             </button>
           </li>
-          <li class="">
+          <li class="sm:w-1/2">
             <button
               type="button"
               @click="$emit('editing'), (showActions = false)"
-              class="flex items-center cursor-pointer text-sm p-4 w-full rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+              class="flex justify-center items-center cursor-pointer text-sm px-2 py-4 w-full rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -76,11 +76,11 @@
               <span class="ml-2 font-semibold text-gray-800">Edit</span>
             </button>
           </li>
-          <li class="">
+          <li class="sm:w-1/2">
             <button
               type="button"
               @click="deletePost(postId)"
-              class="flex items-center cursor-pointer text-sm p-4 w-full rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+              class="flex justify-center items-center cursor-pointer text-sm px-2 py-4 w-full rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

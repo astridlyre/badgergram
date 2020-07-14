@@ -1,10 +1,10 @@
 <template>
   <header
-    class="w-full bg-gray-100 flex justify-center fixed inset-x-0 top-0 shadow z-50"
+    class="py-1 sm:py-2 w-full bg-gray-100 flex justify-center fixed inset-x-0 top-0 shadow z-50"
   >
     <nav class="flex w-full md:max-w-screen-sm justify-between items-center">
       <router-link to="/">
-        <div class="ml-4 flex items-center">
+        <a class="p-2 ml-2 flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 172 172"
@@ -24,11 +24,13 @@
           <h3 class="ml-1 text-xl text-teal-600 md:hidden">
             b<span class="text-teal-900">b</span>
           </h3>
-        </div>
+        </a>
       </router-link>
       <div class="flex justify-end items-center mr-4">
-        <router-link :to="currentUserPath"
-          ><a class="px-4 flex">
+        <router-link to="/settings"
+          ><a
+            class="px-2 py-4 rounded flex hover:bg-gray-200 focus:bg-gray-200"
+          >
             <img
               :src="userProfile.picUrl"
               alt="User Pic"
@@ -39,7 +41,7 @@
             }}</span></a
           ></router-link
         >
-        <router-link to="/settings">
+        <!-- <router-link to="/settings">
           <a class="px-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -55,8 +57,11 @@
                 d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
               ></path></svg
           ></a>
-        </router-link>
-        <a @click="logout()" class="pl-4 flex items-center cursor-pointer">
+        </router-link> -->
+        <a
+          @click="logout()"
+          class="px-2 py-4 hover:bg-gray-200 focus:bg-gray-200 rounded flex items-center cursor-pointer"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

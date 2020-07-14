@@ -6,31 +6,38 @@
       class="mt-20 p-4 w-full bg-gray-100 rounded flex flex-col items-start relative shadow"
     >
       <div class="flex w-full flex-wrap">
-        <div class="w-full flex items-center">
-          <img
-            :src="userProfile.picUrl"
-            id="profilePic"
-            alt="Current Profile Pic"
-            class="w-12 h-12 border-2 border-teal-900 rounded-full"
-          />
-          <h3 class="ml-2 font-bold text-lg text-teal-900">
-            {{ userProfile.name }}
-          </h3>
+        <div class="w-full flex items-end">
+          <div>
+            <router-link
+              :to="'/user/' + currentUser"
+              class="p-4 flex items-center hover:bg-gray-300 rounded"
+            >
+              <img
+                :src="userProfile.picUrl"
+                id="profilePic"
+                alt="Current Profile Pic"
+                class="w-12 h-12 border-2 border-teal-900 rounded-full"
+              />
+              <h3 class="ml-2 font-bold text-lg text-teal-900">
+                {{ userProfile.name }}
+              </h3>
+            </router-link>
+            <button
+              @click="updateProfile()"
+              class="mt-2 self-end w-full px-2 py-1 bg-teal-900 text-sm text-gray-100 font-semibold rounded hover:bg-teal-800 shadow-sm"
+            >
+              Update Profile
+            </button>
+          </div>
           <transition name="fade">
             <p
               v-if="showSuccess"
-              class="ml-4 text-teal-600 font-semibold transition-all"
+              class="ml-4 mb-1 text-teal-600 font-semibold transition-all"
             >
               Profile updated!
             </p>
           </transition>
         </div>
-        <button
-          @click="updateProfile()"
-          class="mt-2 self-end w-1/2 sm:w-1/4 px-2 py-1 bg-teal-900 text-sm text-gray-100 font-semibold rounded hover:bg-teal-800 shadow-sm"
-        >
-          Update Profile
-        </button>
       </div>
 
       <form @submit.prevent class="mt-4 w-full">

@@ -107,7 +107,7 @@ const store = new Vuex.Store({
         title: "a new badger",
         gender: "badger",
         website: "https://badbadger.netlify.app",
-        friends: [],
+        // friends: [],
       });
 
       // fetch user profile and set in state
@@ -123,7 +123,11 @@ const store = new Vuex.Store({
         userName: state.userProfile.name,
         userPic: state.userProfile.picUrl,
         comments: 0,
-        likes: 0,
+        reactions: {
+          likes: 0,
+          nopes: 0,
+          loves: 0,
+        },
       });
     },
     async deletePost({ state, commit }, post) {
@@ -131,11 +135,11 @@ const store = new Vuex.Store({
       const docId = `${post.id}`;
 
       await fb.postsCollection.doc(docId).delete();
-      const postLikes = await fb.likesCollection
+      const postReactions = await fb.reactionsCollection
         .where("postId", "==", docId)
         .get();
-      postLikes.forEach((doc) => {
-        fb.likesCollection.doc(doc.id).delete();
+      postReactions.forEach((doc) => {
+        fb.reactionsCollection.doc(doc.id).delete();
       });
       const postComments = await fb.commentsCollection
         .where("postId", "==", docId)
@@ -151,26 +155,47 @@ const store = new Vuex.Store({
       await fb.commentsCollection.doc(docId).delete();
     },
     // eslint-disable-next-line no-unused-vars
-    async likePost({ commit }, post) {
-      const userId = fb.auth.currentUser.uid;
-      const docId = `${userId}_${post.id}`;
+    // async reactToPost({ commit }, post) {
+    //   const userId = fb.auth.currentUser.uid;
+    //   const docId = `${userId}_${post.id}`;
+    //   const reactType = react;
+    //   console.log(reactType);
 
-      //check if user has liked post
-      const doc = await fb.likesCollection.doc(docId).get();
-      if (doc.exists) {
-        return;
-      }
-      // create post
-      await fb.likesCollection.doc(docId).set({
-        postId: post.id,
-        userId: userId,
-      });
+    //   //check if user has liked post
+    //   const doc = await fb.reactionsCollection.doc(docId).get();
+    //   if (doc.exists) {
+    //     return;
+    //   }
+    //   // create post
+    //   await fb.reactionsCollection.doc(docId).set({
+    //     postId: post.id,
+    //     userId: userId,
+    //     reaction: reactType,
+    //   });
 
-      // update post likes count
-      fb.postsCollection.doc(post.id).update({
-        likes: post.likesCount + 1,
-      });
-    },
+    //   // update post likes count
+    //   if (reactType === "like") {
+    //     fb.postsCollection.doc(post.id).update({
+    //       reactions: {
+    //         likes: post.likesCount + 1,
+    //       },
+    //     });
+    //   } else if (reactType === "nope") {
+    //     fb.postsCollection.doc(post.id).update({
+    //       reactions: {
+    //         nopes: post.nopesCount + 1,
+    //       },
+    //     });
+    //   } else if (reactType === "love") {
+    //     fb.postsCollection.doc(post.id).update({
+    //       reactions: {
+    //         loves: post.lovesCount + 1,
+    //       },
+    //     });
+    //   } else {
+    //     return;
+    //   }
+    // },
     async updateProfile({ dispatch }, user) {
       const userId = fb.auth.currentUser.uid;
       // update user object
