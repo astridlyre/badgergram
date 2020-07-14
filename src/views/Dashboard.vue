@@ -71,7 +71,7 @@
             <form @submit.prevent>
               <textarea
                 v-model.trim="post.content"
-                class="form-textarea mt-1 block w-full resize-none"
+                class="hide-scrollbar form-textarea mt-1 block w-full resize-none"
                 rows="3"
                 :placeholder="placeholderText"
               ></textarea>
@@ -173,5 +173,14 @@ export default {
 /* .slide-fade-leave-active below version 2.1.8 */ {
   transform: translateY(10px);
   opacity: 0;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 </style>

@@ -107,6 +107,7 @@ const store = new Vuex.Store({
         title: "a new badger",
         gender: "badger",
         website: "https://badbadger.netlify.app",
+        friends: [],
       });
 
       // fetch user profile and set in state

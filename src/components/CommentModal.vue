@@ -9,7 +9,7 @@
         <router-link :to="'/user/' + comment.userId" class="flex items-center">
           <img
             :src="comment.userPic"
-            alt="User Pic"
+            alt=""
             class="w-8 h-8 border-2 border-teal-900 rounded-full"
           />
           <h5 class="ml-1 font-semibold leading-none text-teal-900">
@@ -28,23 +28,27 @@
             v-on:editing="
               (editing = true),
                 (commentId = comment.id),
-                (commentContent = comment.content)
+                (editingContent = comment.content)
             "
           ></CommentActionsModal>
         </div>
       </div>
       <div v-if="editing">
+        <div
+          v-if="editing"
+          @click="editing = false"
+          class="fixed z-0 inset-0 w-screen h-screen"
+        ></div>
         <form @submit.prevent class="w-full flex items-center">
           <textarea
-            v-model.trim="commentContent"
-            v-on:keyup.enter="updateComment()"
+            v-model.trim="editingContent"
             placeholder="Write a comment..."
-            class="form-textarea resize-none w-full h-10 text-sm rounded-full"
+            class="hide-scrollbar z-30 form-textarea resize-none w-full h-10 text-sm rounded-full"
           ></textarea>
           <button
-            @click="updateComment()"
+            @click="updateComment(commentId, editingContent), (editing = false)"
             type="button"
-            class="focus:outline-none"
+            class="focus:outline-none z-30"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -71,9 +75,9 @@
     </div>
     <form @submit.prevent class="w-full flex items-center">
       <textarea
-        v-model.trim="comment"
+        v-model.trim="commentContent"
         v-on:keyup.enter="addComment()"
-        class="form-textarea resize-none w-full h-10 text-sm rounded-full"
+        class="hide-scrollbar form-textarea resize-none w-full h-10 text-sm rounded-full"
       ></textarea>
       <button @click="addComment()" type="button" class="focus:outline-none">
         <svg
@@ -96,7 +100,7 @@
 <script>
 import moment from "moment";
 import { commentsCollection, postsCollection, auth } from "@/firebase";
-// import * as fb from "../firebase";
+import * as fb from "../firebase";
 import { mapState } from "vuex";
 import CommentActionsModal from "@/components/CommentActionsModal";
 
@@ -107,10 +111,10 @@ export default {
   props: ["post", "currentUser", "postId"],
   data() {
     return {
-      comment: "",
+      editingContent: "",
       editing: false,
-      // commentContent: "",
-      // commentId: "",
+      commentContent: "",
+      commentId: "",
     };
   },
   computed: {
@@ -124,13 +128,13 @@ export default {
   },
   methods: {
     async addComment() {
-      if (this.comment == "") {
+      if (this.commentContent == "") {
         return;
       }
       // create a comment
       await commentsCollection.add({
         createdOn: new Date(),
-        content: this.comment,
+        content: this.commentContent,
         postId: this.post.id,
         userId: auth.currentUser.uid,
         userName: this.$store.state.userProfile.name,
@@ -143,11 +147,14 @@ export default {
 
       this.comment = "";
     },
-    // updateComment(commentId, commentContent) {
-    //   fb.commentsCollection.doc(commentId).update({
-    //     content: commentContent,
-    //   });
-    // },
+    updateComment(commentId) {
+      if (this.editingContent == "") {
+        return;
+      }
+      fb.commentsCollection.doc(commentId).update({
+        content: this.editingContent,
+      });
+    },
   },
   filters: {
     formatDate(val) {
@@ -161,3 +168,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+</style>

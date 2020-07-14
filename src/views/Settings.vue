@@ -93,6 +93,14 @@
               maxlength="300"
             ></textarea>
           </div>
+          <!-- <div
+            v-for="friend in friendsList"
+            :key="friend"
+            class="mt-2 flex flex-col w-full sm:w-1/2 sm:w-full"
+          >
+            <h5 for="name" class="text-teal-900">{{ friend }}</h5>
+            
+          </div> -->
         </div>
       </form>
     </div>
@@ -117,6 +125,7 @@ export default {
       website: "",
       showSuccess: false,
       picUrl: "",
+      // friends: [],
     };
   },
   computed: {
@@ -152,9 +161,18 @@ export default {
       });
       this.picUrl = picUrl;
     },
+    // async getFriendsList(friends) {
+    //    const friendsList = await fb.usersCollection
+    //     .where("userId", "==", docId)
+    //     .get();
+    //   postComments.forEach((doc) => {
+    //     fb.commentsCollection.doc(doc.id).delete();
+    //   });
+    // }
   },
   created() {
     this.updatePic();
+    // this.getFriendsList();
   },
 };
 </script>

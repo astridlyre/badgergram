@@ -51,7 +51,7 @@
               </svg>
             </button>
           </li>
-          <!-- <li class="w-full">
+          <li class="w-full">
             <button
               type="button"
               @click="$emit('editing', commentId), (showActions = false)"
@@ -74,7 +74,7 @@
                 ></path>
               </svg>
             </button>
-          </li> -->
+          </li>
           <li class="w-full">
             <button
               type="button"

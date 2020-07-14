@@ -9,7 +9,7 @@
       <button
         type="button"
         @click="showActions = true"
-        class="w-full flex items-center cursor-pointer text-sm px-4 py-2 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+        class="w-full flex items-center cursor-pointer text-sm p-4 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@
             <button
               type="button"
               @click="showActions = false"
-              class="w-full flex items-center cursor-pointer text-sm px-4 py-2 rounded bg-gray-200 bg-gray-200 focus:outline-none"
+              class="w-full flex items-center cursor-pointer text-sm p-4 rounded bg-gray-200 bg-gray-200 focus:outline-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@
             <button
               type="button"
               @click="$emit('editing'), (showActions = false)"
-              class="flex items-center cursor-pointer text-sm px-4 py-2 w-full rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+              class="flex items-center cursor-pointer text-sm p-4 w-full rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +80,7 @@
             <button
               type="button"
               @click="deletePost(postId)"
-              class="flex items-center cursor-pointer text-sm px-4 py-2 w-full rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+              class="flex items-center cursor-pointer text-sm p-4 w-full rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

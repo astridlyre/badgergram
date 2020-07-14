@@ -5,7 +5,7 @@
         <router-link :to="'/user/' + userId" class="flex items-center">
           <img
             :src="userPic"
-            alt="User Pic"
+            alt=""
             class="w-12 h-12 border-2 border-teal-900 rounded-full"
           />
           <h5 class="ml-1 text-lg font-semibold leading-none text-teal-900">
@@ -20,10 +20,11 @@
       </div>
     </div>
     <div v-if="editing">
-      <form @submit.prevent class="p-2">
+      <form @submit.prevent class="px-2 mt-4">
         <textarea
           v-model.trim="editedContent"
-          class="form-textarea resize-none w-full rounded"
+          rows="3"
+          class="hide-scrollbar form-textarea resize-none w-full rounded"
         ></textarea>
         <div class="w-full flex justify-center">
           <button
@@ -68,13 +69,13 @@
         <p class="mt-4 text-gray-800">{{ postContent }}</p>
       </div>
     </div>
-    <div class="px-4 flex w-full ">
+    <div class=" flex w-full ">
       <div
-        class="mt-4 py-4 w-full border-t border-gray-300 flex justify-evenly"
+        class="mt-4 py-1 w-full border-t border-gray-300 flex justify-evenly"
       >
         <button
           type="button"
-          class="flex items-center cursor-pointer text-sm px-2 py-1 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+          class="flex items-center cursor-pointer text-sm p-4 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +90,7 @@
               d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
             ></path>
           </svg>
-          <span class="ml-2 font-semibold text-gray-800"
+          <span class="ml-1 font-semibold text-gray-800"
             >Comments {{ postComments }}</span
           >
         </button>
@@ -97,7 +98,7 @@
         <button
           type="button"
           @click="likePost(postId, postLikes)"
-          class="flex items-center cursor-pointer text-sm px-2 py-1 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+          class="flex items-center cursor-pointer text-sm p-4 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +113,7 @@
               d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
             ></path>
           </svg>
-          <span class="ml-2 font-semibold text-gray-800"
+          <span class="ml-1 font-semibold text-gray-800"
             >Likes {{ postLikes }}</span
           >
         </button>
@@ -170,9 +171,6 @@ export default {
     },
   },
   methods: {
-    // deletePost(id) {
-    //   this.$store.dispatch("deletePost", { id });
-    // },
     likePost(id, likesCount) {
       this.$store.dispatch("likePost", { id, likesCount });
     },
@@ -215,5 +213,16 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 </style>
