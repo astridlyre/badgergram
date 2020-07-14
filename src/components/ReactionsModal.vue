@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 <template>
   <div class="w-1/3">
     <div
@@ -113,7 +114,13 @@
 </template>
 
 <script>
-import { reactionsCollection, postsCollection, auth } from "@/firebase";
+import {
+  reactionsCollection,
+  postsCollection,
+  auth,
+  incrementMinus,
+  incrementPlus,
+} from "@/firebase";
 
 export default {
   props: ["post", "postId", "postLikes", "postNopes", "postLoves"],
@@ -140,6 +147,7 @@ export default {
       //check if user has liked post
       const doc = await reactionsCollection.doc(this.docId).get();
       if (doc.exists) {
+        this.changeReaction();
         return;
       }
       // create reaction
@@ -153,55 +161,83 @@ export default {
       if (reactionType === "like") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            likes: this.post.reactions.likes + 1,
+            // eslint-disable-next-line no-undef
+            likes: incrementPlus,
           },
         });
       }
       if (reactionType === "nope") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            nopes: this.post.reactions.nopes + 1,
+            // eslint-disable-next-line no-undef
+            nopes: incrementPlus,
           },
         });
       }
       if (reactionType === "love") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            loves: this.post.reactions.loves + 1,
+            // eslint-disable-next-line no-undef
+            loves: incrementPlus,
           },
         });
       }
     },
-    // async removeReaction() {
-    //   const ref = await reactionsCollection.doc(this.docId).get();
-    //   const reactionObj = ref.data();
-    //   let currentReact = reactionObj.reaction;
+    async changeReaction() {
+      const ref = await reactionsCollection.doc(this.docId).get();
+      const reactionObj = ref.data();
+      let currentReact = reactionObj.reaction;
 
-    //   await reactionsCollection.doc(this.docId).delete();
+      await reactionsCollection.doc(this.docId).update({
+        reaction: this.reactionType,
+      });
 
-    //   if (currentReact === "like") {
-    //     await postsCollection.doc(this.post.id).update({
-    //       reactions: {
-    //         // likes: this.post.reactions.likes - 1,
-    //         likes: 1,
-    //       },
-    //     });
-    //   }
-    //   if (currentReact === "nope") {
-    //     await postsCollection.doc(this.post.id).update({
-    //       reactions: {
-    //         nopes: 1,
-    //       },
-    //     });
-    //   }
-    //   if (currentReact === "love") {
-    //     await postsCollection.doc(this.post.id).update({
-    //       reactions: {
-    //         loves: 1,
-    //       },
-    //     });
-    //   }
-    // },
+      if (currentReact === "like" && this.reactionType === "nope") {
+        await postsCollection.doc(this.post.id).update({
+          reactions: {
+            likes: incrementMinus,
+            nopes: incrementPlus,
+          },
+        });
+      } else if (currentReact === "like" && this.reactionType === "love") {
+        await postsCollection.doc(this.post.id).update({
+          reactions: {
+            likes: incrementMinus,
+            loves: incrementPlus,
+          },
+        });
+      } else if (currentReact === "nope" && this.reactionType === "like") {
+        await postsCollection.doc(this.post.id).update({
+          reactions: {
+            nopes: incrementMinus,
+            likes: incrementPlus,
+          },
+        });
+      } else if (currentReact === "nope" && this.reactionType === "love") {
+        await postsCollection.doc(this.post.id).update({
+          reactions: {
+            nopes: incrementMinus,
+            loves: incrementPlus,
+          },
+        });
+      } else if (currentReact === "love" && this.reactionType === "like") {
+        await postsCollection.doc(this.post.id).update({
+          reactions: {
+            loves: incrementMinus,
+            likes: incrementPlus,
+          },
+        });
+      } else if (currentReact === "love" && this.reactionType === "nope") {
+        await postsCollection.doc(this.post.id).update({
+          reactions: {
+            loves: incrementMinus,
+            nopes: incrementPlus,
+          },
+        });
+      } else {
+        return;
+      }
+    },
   },
 };
 </script>

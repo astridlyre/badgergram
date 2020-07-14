@@ -99,7 +99,12 @@
 
 <script>
 import moment from "moment";
-import { commentsCollection, postsCollection, auth } from "@/firebase";
+import {
+  commentsCollection,
+  postsCollection,
+  auth,
+  incrementPlus,
+} from "@/firebase";
 import * as fb from "../firebase";
 import { mapState } from "vuex";
 import CommentActionsModal from "@/components/CommentActionsModal";
@@ -142,7 +147,7 @@ export default {
       });
       // update comment count on post
       await postsCollection.doc(this.post.id).update({
-        comments: parseInt(this.post.comments) + 1,
+        comments: incrementPlus,
       });
 
       this.commentContent = "";

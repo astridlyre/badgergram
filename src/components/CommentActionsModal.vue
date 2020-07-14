@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { postsCollection } from "@/firebase";
+import { postsCollection, incrementMinus } from "@/firebase";
 
 export default {
   props: ["commentId", "post"],
@@ -117,7 +117,7 @@ export default {
       this.$store.dispatch("deleteComment", { commentId });
 
       await postsCollection.doc(this.post.id).update({
-        comments: parseInt(this.post.comments) - 1,
+        comments: incrementMinus,
       });
     },
   },

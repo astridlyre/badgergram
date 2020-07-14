@@ -21,6 +21,8 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
 const storageRef = storage.ref();
+const incrementPlus = firebase.firestore.FieldValue.increment(1);
+const incrementMinus = firebase.firestore.FieldValue.increment(-1);
 
 // collection references
 const usersCollection = db.collection("users");
@@ -38,4 +40,6 @@ export {
   postsCollection,
   commentsCollection,
   reactionsCollection,
+  incrementMinus,
+  incrementPlus,
 };
