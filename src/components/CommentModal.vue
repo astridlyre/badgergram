@@ -145,7 +145,7 @@ export default {
         comments: parseInt(this.post.comments) + 1,
       });
 
-      this.comment = "";
+      this.commentContent = "";
     },
     updateComment(commentId) {
       if (this.editingContent == "") {
