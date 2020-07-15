@@ -1,19 +1,23 @@
 /* eslint-disable no-unused-vars */ /* eslint-disable no-unused-vars */ /*
 eslint-disable no-unused-vars */
 <template>
-  <div class="w-full mb-4">
+  <div class="sm:w-1/2 my-4 sm:mt-2 sm:mb-0">
     <div>
-      <h4 class="text-teal-900 text-center font-bold">
+      <h4
+        class="text-teal-900 text-center sm:text-left font-semibold select-none"
+      >
         Draw an Awesome Picture...
       </h4>
     </div>
-    <div class="w-full flex justify-center items-center relative">
+    <div
+      class="w-full flex justify-center sm:justify-start items-center relative"
+    >
       <canvas
         id="canvas"
         ref="canvas"
         width="250"
         height="250"
-        class="border-2 border-teal-900"
+        class="border-2 border-gray-300"
         v-touch:start="handleMouseDown"
         v-touch:end="handleMouseUp"
         v-touch:moving="handleMouseMove"
@@ -36,28 +40,29 @@ eslint-disable no-unused-vars */
         </div>
       </transition>
     </div>
-    <div class="w-full flex justify-center">
-      <button
-        @click="clearCanvas()"
-        class="mt-2 w-20 w-self-end px-2 py-1 bg-red-700 text-sm text-gray-100 shadow-sm font-semibold rounded hover:bg-red-800"
-      >
-        Delete
-      </button>
+    <div class="w-full flex justify-center sm:justify-start">
       <button
         @click="saveCanvas(), $emit('update-pic')"
-        class="ml-2 w-20 mt-2 self-end px-2 py-1 bg-teal-900 text-sm text-gray-100 shadow-sm font-semibold rounded hover:bg-teal-800"
+        class="w-20 mt-2 px-2 py-1 bg-teal-900 text-sm text-gray-100 shadow-sm font-semibold rounded hover:bg-teal-800"
       >
         Save
+      </button>
+      <button
+        @click="clearCanvas()"
+        class="ml-2 mt-2 w-20 px-2 py-1 bg-red-700 text-sm text-gray-100 shadow-sm font-semibold rounded hover:bg-red-800"
+      >
+        Delete
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import * as fb from "../firebase";
-import { mapState } from "vuex";
+// import * as fb from "../firebase";
+import { storageRef } from "@/firebase";
 
 export default {
+  props: ["currentUser"],
   data: function() {
     return {
       mouse: {
@@ -77,7 +82,6 @@ export default {
     };
   },
   computed: {
-    ...mapState(["profilePic"]),
     currentMouse: function() {
       const rect = this.canvas.getBoundingClientRect();
 
@@ -85,9 +89,6 @@ export default {
         x: this.mouse.current.x - rect.left,
         y: this.mouse.current.y - rect.top,
       };
-    },
-    currentUser: function() {
-      return fb.auth.currentUser.uid;
     },
   },
   methods: {
@@ -130,7 +131,7 @@ export default {
       this.ctx.beginPath();
     },
     saveCanvas() {
-      const profilePicRef = fb.storageRef.child(`${this.currentUser}.png`);
+      const profilePicRef = storageRef.child(`${this.currentUser}.png`);
       // profilePicRef.delete().then
 
       this.canvas.toBlob(function(blob) {

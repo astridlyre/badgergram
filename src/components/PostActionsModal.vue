@@ -89,12 +89,12 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="stroke-current text-red-800 h-4 w-4"
+                class="stroke-current text-red-700 h-4 w-4"
               >
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                 <line x1="9" y1="9" x2="15" y2="15"></line>
                 <line x1="15" y1="9" x2="9" y2="15"></line></svg
-              ><span class="ml-2 font-semibold text-red-800">Delete</span>
+              ><span class="ml-2 font-semibold text-red-700">Delete</span>
             </button>
           </li>
         </ul>

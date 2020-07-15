@@ -1,151 +1,192 @@
 <template>
-  <div class="shadow">
-    <div class="px-4 w-full">
-      <div class="mt-4 flex items-center">
-        <router-link :to="'/user/' + userId" class="flex items-center">
+  <div class="shadow relative">
+    <div class="overflow-hidden">
+      <div class="w-full">
+        <div class="p-4 flex items-center relative w-full bg-gray-100">
           <img
             :src="userPic"
             alt=""
-            class="w-12 h-12 border-2 border-teal-900 rounded-full"
+            class="absolute right-0 object-cover z-10"
+            style="opacity: 0.05;"
           />
-          <h5 class="ml-1 text-lg font-semibold leading-none text-teal-900">
-            {{ userName }}
-          </h5>
-        </router-link>
-        <div class="flex-grow text-right">
-          <span class="text-xs leading-none text-gray-500">{{
-            createdOn | formatDate
-          }}</span>
+          <router-link :to="'/user/' + userId" class="flex items-center z-20">
+            <img
+              :src="userPic"
+              alt=""
+              class="h-12 w-12 border-2 border-teal-800 rounded-full"
+            />
+            <div class="flex flex-col ml-1">
+              <h5
+                class="relative text-lg font-semibold leading-none text-teal-900"
+              >
+                {{ userName }}
+              </h5>
+              <span
+                class="absolute bottom-0 mb-4 text-xs leading-none text-gray-500"
+                >{{ createdOn | formatDate }}</span
+              >
+            </div>
+          </router-link>
         </div>
       </div>
-    </div>
-    <div v-if="editing">
-      <form @submit.prevent class="px-2 mt-4">
-        <textarea
-          v-model.trim="editedContent"
-          rows="3"
-          class="hide-scrollbar form-textarea resize-none w-full rounded"
-        ></textarea>
-        <div class="w-full flex justify-center">
-          <button
-            type="button"
-            @click="editing = false"
-            class="mt-1 w-20 w-self-end px-2 py-1 bg-red-700 text-sm text-gray-100 shadow-sm font-semibold rounded hover:bg-red-800"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            @click="updatePost(post.id, editedContent), (editing = false)"
-            class="ml-2 w-20 mt-1 self-end px-2 py-1 bg-teal-900 text-sm text-gray-100 shadow-sm font-semibold rounded hover:bg-teal-800"
-          >
-            Save
-          </button>
-        </div>
-      </form>
-    </div>
-    <div v-else>
-      <div v-if="postContent.length > 200" class="px-4">
-        <div>
-          <p v-if="!showFullPost" class="mt-4 text-gray-800">
-            {{ postContent | trimLength
-            }}<a
-              @click="showFullPost = true"
-              class="cursor-pointer text-color-gray-300 font-bold hover:text-color-gray-800"
-              ><span>See more</span></a
+
+      <div v-if="editing">
+        <div
+          @click="editing = false"
+          class="fixed z-20 inset-0 w-screen h-screen"
+        ></div>
+        <form @submit.prevent class="px-2 mt-2 z-50 relative">
+          <div class="relative">
+            <p class="py-2 invisible">{{ editedContent }}</p>
+            <textarea
+              v-model="editedContent"
+              rows="3"
+              class="absolute inset-0 hide-scrollbar bg-transparent block form-textarea p-2 border-0 resize-none w-full text-gray-800 rounded"
+            ></textarea>
+          </div>
+          <div class="w-full flex justify-end">
+            <button
+              type="button"
+              @click="updatePost(post.id, editedContent), (editing = false)"
+              class="p-4 rounded hover:bg-gray-200 focus:outline-none focus:bg-gray-200"
             >
-          </p>
-          <p v-else class="mt-4 text-gray-800">
-            {{ postContent }}
-            <a
-              @click="showFullPost = false"
-              class="cursor-pointer text-color-gray-300 font-bold hover:text-color-gray-800"
-              ><span>See less</span></a
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="stroke-current text-teal-800 w-6 h-6"
+              >
+                <polyline points="9 11 12 14 22 4"></polyline>
+                <path
+                  d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+      <div v-else>
+        <div v-if="postContent.length > 300" class="px-4">
+          <div>
+            <p v-if="!showFullPost" class="mt-4 text-gray-800">
+              {{ postContent | trimLength
+              }}<a
+                @click="showFullPost = true"
+                class="cursor-pointer text-teal-800 font-semibold hover:text-teal-700"
+              >
+                show more</a
+              >
+            </p>
+            <p v-else class="mt-4 text-gray-800">
+              {{ postContent }}
+              <a
+                @click="showFullPost = false"
+                class="cursor-pointer text-teal-800 font-semibold hover:text-teal-700"
+              >
+                show less</a
+              >
+            </p>
+          </div>
+        </div>
+        <div v-else class="px-4">
+          <p class="mt-4 text-gray-800">{{ postContent }}</p>
+        </div>
+
+        <div class="flex w-full">
+          <div
+            v-if="postReactions.loves > 0"
+            class="ml-4 mt-2 flex items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="stroke-current text-red-700 h-3 w-3"
             >
-          </p>
-        </div>
-      </div>
-      <div v-else class="px-4">
-        <p class="mt-4 text-gray-800">{{ postContent }}</p>
-      </div>
-      <div class="flex w-full">
-        <div v-if="postReactions.loves > 0" class="ml-4 mt-2 flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="stroke-current text-red-700 h-4 w-4"
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+              ></path>
+            </svg>
+            <span class="ml-1 font-semibold text-red-700 text-xs">{{
+              postReactions.loves
+            }}</span>
+          </div>
+          <div
+            v-if="postReactions.likes > 0"
+            class="ml-4 mt-2 flex items-center"
           >
-            <path
-              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-            ></path>
-          </svg>
-          <span class="ml-2 font-semibold text-red-700 text-sm">{{
-            postReactions.loves
-          }}</span>
-        </div>
-        <div v-if="postReactions.likes > 0" class="ml-4 mt-2 flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="stroke-current text-gray-800 h-4 w-4"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="stroke-current text-gray-800 h-3 w-3"
+            >
+              <path
+                d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+              ></path>
+            </svg>
+            <span class="ml-1 font-semibold text-gray-800 text-xs">{{
+              postReactions.likes
+            }}</span>
+          </div>
+          <div
+            v-if="postReactions.nopes > 0"
+            class="ml-4 mt-2 flex items-center"
           >
-            <path
-              d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
-            ></path>
-          </svg>
-          <span class="ml-2 font-semibold text-sm">{{
-            postReactions.likes
-          }}</span>
-        </div>
-        <div v-if="postReactions.nopes > 0" class="ml-4 mt-2 flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="stroke-current text-gray-800 h-4 w-4"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="stroke-current text-gray-800 h-3 w-3"
+            >
+              <path
+                d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"
+              ></path>
+            </svg>
+            <span class="ml-2 font-semibold text-gray-800 text-xs">{{
+              postReactions.nopes
+            }}</span>
+          </div>
+          <div
+            v-if="postComments.length > 0"
+            class="ml-4 mt-2 flex items-center"
           >
-            <path
-              d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"
-            ></path>
-          </svg>
-          <span class="ml-2 font-semibold text-sm">{{
-            postReactions.nopes
-          }}</span>
-        </div>
-        <div v-if="postComments > 0" class="ml-4 mt-2 flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="stroke-current text-gray-800 h-4 w-4"
-          >
-            <path
-              d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-            ></path>
-          </svg>
-          <span class="ml-2 font-semibold text-gray-800 text-sm">{{
-            postComments
-          }}</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="stroke-current text-gray-800 h-3 w-3"
+            >
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              ></path>
+            </svg>
+            <span class="ml-1 font-semibold text-gray-800 text-xs">{{
+              postComments.length
+            }}</span>
+          </div>
         </div>
       </div>
     </div>
+    <!-- Actions bar -->
     <div class=" flex w-full ">
       <div
-        class="mt-4 py-1 w-full border-t border-gray-300 flex justify-center"
+        class="mt-4 py-1 px-4 w-full border-t border-gray-300 flex justify-center"
       >
         <ReactionsModal
           :post="post"
@@ -174,29 +215,7 @@
           </svg>
           <span class="ml-2 font-semibold text-gray-800">Comment</span>
         </button>
-
-        <!-- <button
-          type="button"
-          @click="likePost(postId, postLikes)"
-          class="flex items-center cursor-pointer text-sm px-2 py-4 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="stroke-current text-gray-800 h-4 w-4"
-          >
-            <path
-              d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
-            ></path>
-          </svg>
-          <span class="ml-2 font-semibold text-gray-800"
-            >Like {{ postLikes }}</span
-          >
-        </button> -->
+        <!-- Post actions -->
         <PostActionsModal
           v-if="isPostMine(userId)"
           v-bind="$props"
@@ -204,6 +223,7 @@
         ></PostActionsModal>
       </div>
     </div>
+    <!-- Comments Section -->
     <div class="px-4 text-gray-900 bg-gray-100 w-full">
       <div v-for="comment in postComments" :key="comment.id" class="">
         <CommentModal
@@ -220,14 +240,19 @@
     </div>
     <!-- Make a comment -->
     <div class="p-4 text-gray-900 bg-gray-100 w-full">
-      <form @submit.prevent class="w-full flex items-center">
+      <form @submit.prevent class="w-full flex items-center relative">
         <textarea
           ref="makeAComment"
-          v-model.trim="commentContent"
+          v-model="commentContent"
           v-on:keyup.enter="addComment()"
-          class="hide-scrollbar form-textarea resize-none w-full h-10 text-sm rounded-full"
+          placeholder="Write a comment..."
+          class="pr-10 hide-scrollbar form-textarea placeholder-gray-500 resize-none w-full h-10 text-gray-800 text-sm rounded"
         ></textarea>
-        <button @click="addComment()" type="button" class="focus:outline-none">
+        <button
+          @click="addComment()"
+          type="button"
+          class="absolute inset-y-0 right-0 rounded focus:bg-gray-200 hover:bg-gray-200 p-2 focus:outline-none"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -235,7 +260,7 @@
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="ml-2 stroke-current text-teal-600 w-6 h-6 hover:text-teal-900"
+            class="stroke-current text-teal-800 w-6 h-6 hover:text-teal-900"
           >
             <line x1="22" y1="2" x2="11" y2="13"></line>
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -341,10 +366,10 @@ export default {
       return moment(date).fromNow();
     },
     trimLength(val) {
-      if (val.length < 200) {
+      if (val.length < 300) {
         return val;
       }
-      return `${val.substring(0, 200)}...`;
+      return `${val.substring(0, 300)}...`;
     },
   },
 };

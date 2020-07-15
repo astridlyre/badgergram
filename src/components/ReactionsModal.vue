@@ -118,8 +118,8 @@ import {
   reactionsCollection,
   postsCollection,
   auth,
-  incrementMinus,
-  incrementPlus,
+  // incrementMinus,
+  // incrementPlus,
 } from "@/firebase";
 
 export default {
@@ -161,8 +161,8 @@ export default {
       if (reactionType === "like") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            likes: incrementPlus,
-            // likes: this.post.reactions.likes + 1,
+            // likes: incrementPlus,
+            likes: this.post.reactions.likes + 1,
             nopes: this.post.reactions.nopes,
             loves: this.post.reactions.loves,
           },
@@ -170,8 +170,8 @@ export default {
       } else if (reactionType === "nope") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            nopes: incrementPlus,
-            // nopes: this.post.reactions.nopes + 1,
+            // nopes: incrementPlus,
+            nopes: this.post.reactions.nopes + 1,
             likes: this.post.reactions.likes,
             loves: this.post.reactions.loves,
           },
@@ -179,8 +179,8 @@ export default {
       } else if (reactionType === "love") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            loves: incrementPlus,
-            // loves: this.post.reactions.loves + 1,
+            // loves: incrementPlus,
+            loves: this.post.reactions.loves + 1,
             likes: this.post.reactions.likes,
             nopes: this.post.reactions.nopes,
           },
@@ -201,49 +201,61 @@ export default {
       if (currentReact === "like" && this.reactionType === "nope") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            likes: incrementMinus,
-            nopes: incrementPlus,
+            // likes: incrementMinus,
+            // nopes: incrementPlus,
             loves: this.post.reactions.loves,
+            likes: this.post.reactions.likes - 1,
+            nopes: this.post.reactions.nopes + 1,
           },
         });
       } else if (currentReact === "like" && this.reactionType === "love") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            likes: incrementMinus,
-            loves: incrementPlus,
+            // likes: incrementMinus,
+            // loves: incrementPlus,
             nopes: this.post.reactions.nopes,
+            likes: this.post.reactions.likes - 1,
+            loves: this.post.reactions.loves + 1,
           },
         });
       } else if (currentReact === "nope" && this.reactionType === "like") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            nopes: incrementMinus,
-            likes: incrementPlus,
+            // nopes: incrementMinus,
+            // likes: incrementPlus,
             loves: this.post.reactions.loves,
+            nopes: this.post.reactions.nopes - 1,
+            likes: this.post.reactions.likes + 1,
           },
         });
       } else if (currentReact === "nope" && this.reactionType === "love") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            nopes: incrementMinus,
-            loves: incrementPlus,
+            // nopes: incrementMinus,
+            // loves: incrementPlus,
             likes: this.post.reactions.likes,
+            nopes: this.post.reactions.nopes - 1,
+            loves: this.post.reactions.loves + 1,
           },
         });
       } else if (currentReact === "love" && this.reactionType === "like") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            loves: incrementMinus,
-            likes: incrementPlus,
+            // loves: incrementMinus,
+            // likes: incrementPlus,
             nopes: this.post.reactions.nopes,
+            loves: this.post.reactions.loves - 1,
+            likes: this.post.reactions.likes + 1,
           },
         });
       } else if (currentReact === "love" && this.reactionType === "nope") {
         await postsCollection.doc(this.post.id).update({
           reactions: {
-            loves: incrementMinus,
-            nopes: incrementPlus,
+            // loves: incrementMinus,
+            // nopes: incrementPlus,
             likes: this.post.reactions.likes,
+            loves: this.post.reactions.loves - 1,
+            nopes: this.post.reactions.nopes + 1,
           },
         });
       } else {

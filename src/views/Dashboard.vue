@@ -1,14 +1,14 @@
 <template>
-  <section class="py-16 mt-2 min-h-screen w-full bg-teal-900">
+  <section class="py-16 mt-2 min-h-screen w-full">
     <div
-      class="px-4 relative flex flex-col min-h-full w-full justify-start items-center"
+      class="relative flex flex-col min-h-full w-full justify-start items-center"
     >
       <!-- post listing -->
       <div v-if="posts.length" class="w-full">
         <div
           v-for="post in posts"
           :key="post.id"
-          class="mt-4 w-full flex flex-col bg-gray-100 rounded shadow"
+          class="mt-4 w-full flex flex-col bg-gray-100 sm:overflow-hidden sm:rounded shadow"
         >
           <PostModal
             :post="post"
@@ -25,13 +25,15 @@
         </div>
       </div>
       <div v-else>
-        <p class="mt-4 text-teal-100 text-sm">There are currently no posts</p>
+        <p class="mt-4 text-teal-800 text-sm font-semibold">
+          There are currently no posts
+        </p>
       </div>
     </div>
 
     <!-- Make a post section -->
     <div
-      class="flex flex-col justify-end items-center fixed bottom-0 bg-gray-100 max-w-screen-sm w-full shadow border-t z-50"
+      class="flex flex-col justify-end items-center fixed bottom-0 bg-gray-100 max-w-screen-sm w-full shadow border-t z-50 sm:rounded-t"
     >
       <div class="p-1 flex w-full justify-center items-center">
         <button
@@ -47,7 +49,7 @@
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="h-6 w-6 stroke-current text-teal-900"
+            class="h-6 w-6 stroke-current text-teal-800"
           >
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
             <line x1="12" y1="8" x2="12" y2="16"></line>
@@ -64,7 +66,7 @@
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="h-6 w-6 stroke-current text-teal-900"
+            class="h-6 w-6 stroke-current text-teal-800"
           >
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <polyline points="19 12 12 19 5 12"></polyline>
@@ -77,7 +79,7 @@
             <textarea
               ref="makeAPost"
               v-model.trim="post.content"
-              class="hide-scrollbar form-textarea mt-1 block w-full resize-none"
+              class="hide-scrollbar form-textarea placeholder-gray-500 text-teal-800 mt-1 block w-full resize-none"
               rows="3"
               :placeholder="placeholderText"
             ></textarea>
@@ -85,7 +87,7 @@
               @click="createPost()"
               :disabled="post.content === ''"
               type="button"
-              class="py-2 mt-2 w-full bg-teal-900 rounded text-teal-100 text-sm font-bold hover:bg-teal-800 focus:bg-teal-800"
+              class="py-2 mt-2 w-full bg-teal-800 rounded text-gray-100 text-sm font-bold hover:bg-teal-800 focus:bg-teal-800"
             >
               Post
             </button>
@@ -99,7 +101,7 @@
 
 <script>
 import moment from "moment";
-import * as fb from "../firebase";
+import { auth } from "@/firebase";
 import { mapState } from "vuex";
 import PostModal from "@/components/PostModal";
 
@@ -114,15 +116,12 @@ export default {
         content: "",
       },
       postComments: [],
-      // postId: this.post.id,
-      // userName: this.post.authorId,
-      // userPic: this.post.userPic,
     };
   },
   computed: {
     ...mapState(["userProfile", "posts"]),
     currentUser: function() {
-      return fb.auth.currentUser.uid;
+      return auth.currentUser.uid;
     },
     placeholderText: function() {
       return `What treats do you have in store for us today, ${this.userProfile.name}?`;

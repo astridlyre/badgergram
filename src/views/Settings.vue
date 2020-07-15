@@ -1,13 +1,13 @@
 <template>
-  <section
-    class="p-4 min-h-screen max-w-full bg-teal-900 flex justify-center items-start"
-  >
+  <section class="min-h-screen max-w-full flex justify-center items-start">
     <div
       class="mt-20 p-4 w-full bg-gray-100 rounded flex flex-col items-start relative shadow"
     >
-      <div class="flex w-full flex-wrap">
-        <div class="w-full flex items-end">
-          <div>
+      <div
+        class="flex w-full justify-center flex-wrap sm:justify-start sm:w-1/2"
+      >
+        <div class="flex flex-col items-center relative">
+          <div class="mb-6">
             <router-link
               :to="'/user/' + currentUser"
               class="p-4 flex items-center hover:bg-gray-300 rounded"
@@ -18,7 +18,7 @@
                 alt="Current Profile Pic"
                 class="w-12 h-12 border-2 border-teal-900 rounded-full"
               />
-              <h3 class="ml-2 font-bold text-lg text-teal-900">
+              <h3 class="ml-2 font-semibold text-2xl text-teal-900">
                 {{ userProfile.name }}
               </h3>
             </router-link>
@@ -32,7 +32,7 @@
           <transition name="fade">
             <p
               v-if="showSuccess"
-              class="ml-4 mb-1 text-teal-600 font-semibold transition-all"
+              class="absolute bottom-0 text-sm text-teal-600 font-semibold transition-all"
             >
               Profile updated!
             </p>
@@ -40,12 +40,15 @@
         </div>
       </div>
 
-      <form @submit.prevent class="mt-4 w-full">
-        <ProfilePicModal v-on:update-pic="updatePic()"></ProfilePicModal>
+      <form @submit.prevent class="w-full sm:flex sm:flex-wrap">
+        <ProfilePicModal
+          v-on:update-pic="updatePic()"
+          :currentUser="currentUser"
+        ></ProfilePicModal>
         <div
-          class="w-full flex flex-col items-center sm:flex-row sm:flex-wrap sm:justify-center sm:items-start"
+          class="w-full sm:w-1/2 flex-2 flex flex-col items-center sm:justify-between"
         >
-          <div class="mt-2 flex flex-col w-full sm:w-1/2">
+          <div class="mt-2 flex flex-col w-full">
             <label for="name" class="text-teal-900">Name</label>
             <input
               v-model.trim="name"
@@ -53,21 +56,21 @@
               :placeholder="userProfile.name"
               id="name"
               maxlength="25"
-              class="form-input text-teal-900 sm:mr-1"
+              class="placeholder-gray-500 form-input text-gray-800"
             />
           </div>
-          <div class="mt-2 flex flex-col w-full sm:w-1/2">
-            <label for="name" class="text-teal-900 sm:ml-1">Title</label>
+          <div class="mt-2 flex flex-col w-full">
+            <label for="name" class="text-teal-900">Title</label>
             <input
               v-model.trim="title"
               type="text"
               :placeholder="userProfile.title"
               id="name"
               maxlength="50"
-              class="form-input text-teal-900 sm:ml-1"
+              class="placeholder-gray-500 form-input text-gray-800"
             />
           </div>
-          <div class="mt-2 flex flex-col w-full sm:w-1/2">
+          <div class="mt-2 flex flex-col w-full">
             <label for="name" class="text-teal-900">Gender</label>
             <input
               v-model.trim="gender"
@@ -75,32 +78,34 @@
               :placeholder="userProfile.gender"
               id="name"
               maxlength="25"
-              class="form-input text-teal-900 sm:mr-1"
+              class="placeholder-gray-500 form-input text-gray-800"
             />
           </div>
-          <div class="mt-2 flex flex-col w-full sm:w-1/2">
-            <label for="name" class="text-teal-900 sm:ml-1">Website</label>
+          <div class="mt-2 flex flex-col w-full">
+            <label for="name" class="text-teal-900">Website</label>
             <input
               v-model.trim="website"
               type="text"
               :placeholder="userProfile.website"
               id="name"
               maxlength="100"
-              class="form-input text-teal-900 sm:ml-1"
+              class="placeholder-gray-500 form-input text-gray-800"
             />
           </div>
-          <div class="mt-2 flex flex-col w-full sm:w-1/2 sm:w-full">
-            <label for="name" class="text-teal-900">Short Bio</label>
-            <textarea
-              v-model.trim="bio"
-              class="form-textarea block w-full resize-none text-teal-900"
-              rows="3"
-              id="bio"
-              :placeholder="userProfile.bio"
-              maxlength="300"
-            ></textarea>
-          </div>
-          <!-- <div
+        </div>
+
+        <div class="mt-2 sm:mt-4 flex flex-col w-full sm:w-1/2 sm:w-full">
+          <label for="name" class="text-teal-900">Short Bio</label>
+          <textarea
+            v-model.trim="bio"
+            class="placeholder-gray-500 form-textarea block w-full resize-none text-gray-800"
+            rows="4"
+            id="bio"
+            :placeholder="userProfile.bio"
+            maxlength="300"
+          ></textarea>
+        </div>
+        <!-- <div
             v-for="friend in friendsList"
             :key="friend"
             class="mt-2 flex flex-col w-full sm:w-1/2 sm:w-full"
@@ -108,7 +113,6 @@
             <h5 for="name" class="text-teal-900">{{ friend }}</h5>
             
           </div> -->
-        </div>
       </form>
     </div>
   </section>
@@ -116,7 +120,7 @@
 
 <script>
 import { mapState } from "vuex";
-import * as fb from "../firebase";
+import { storageRef, auth } from "@/firebase";
 import ProfilePicModal from "@/components/ProfilePicModal";
 
 export default {
@@ -137,7 +141,7 @@ export default {
   computed: {
     ...mapState(["userProfile"]),
     currentUser: function() {
-      return fb.auth.currentUser.uid;
+      return auth.currentUser.uid;
     },
   },
   methods: {
@@ -160,7 +164,7 @@ export default {
       }, 2000);
     },
     async updatePic() {
-      const profilePicRef = fb.storageRef.child(`${this.currentUser}.png`);
+      const profilePicRef = storageRef.child(`${this.currentUser}.png`);
 
       const picUrl = await profilePicRef.getDownloadURL().then(function(url) {
         return url;

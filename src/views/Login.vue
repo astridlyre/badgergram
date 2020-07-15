@@ -1,8 +1,6 @@
 <template>
   <div class="flex items-center justify-center min-h-screen">
-    <main
-      class="bg-gray-100 bg-opacity-75 text-gray-800 p-8 rounded w-5/6 max-w-sm relative"
-    >
+    <main class="bg-gray-100 text-gray-800 p-8 rounded w-5/6 max-w-sm relative">
       <transition name="fade">
         <PasswordReset
           v-if="showPasswordReset"
@@ -31,7 +29,7 @@
             b<span class="text-teal-900">b</span>
           </h3>
         </div>
-        <div class="w-full flex items-center justify-center">
+        <div class="mt-4 w-full flex items-center justify-center">
           <h1 class="text-3xl text-center text-teal-900">Sign In</h1>
         </div>
         <form class="w-full mt-4" @submit.prevent="login()">
@@ -72,7 +70,7 @@
             >
           </div>
           <button
-            class="w-full bg-teal-900 rounded text-gray-100 text-sm font-semibold py-2 mt-2 shadow-sm hover:bg-teal-800"
+            class="w-full bg-teal-800 rounded text-gray-100 text-sm font-semibold py-2 mt-2 shadow-sm hover:bg-teal-900"
             type="submit"
             @click="login()"
           >
@@ -88,7 +86,7 @@
         </div>
         <button
           @click="toggle()"
-          class="w-full bg-teal-100 rounded-sm text-teal-900 text-sm font-semibold py-2 shadow-sm hover:text-teal-800 hover:bg-teal-200"
+          class="w-full bg-gray-300 rounded-sm text-teal-800 text-sm font-semibold py-2 shadow-sm hover:text-teal-800 hover:bg-gray-400"
           type="button"
         >
           Create an Account
@@ -98,22 +96,25 @@
       <transition name="fade">
         <section
           v-show="showSignupForm"
-          class="absolute inset-0 bg-teal-900 text-teal-100 p-8"
+          class="absolute inset-0 bg-teal-800 text-gray-100 p-8"
         >
-          <div @click="toggle()" class="w-full flex justify-end">
+          <button
+            @click="toggle()"
+            class="flex absolute right-0 top-0 p-2 mt-6 mr-6 focus:outline-none cursor-pointer"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="stroke-current h-6 w-6 text-teal-100 -mr-4 -mt-4"
+              class="stroke-current h-6 w-6 text-gray-100 -mr-4 -mt-4"
             >
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
-          </div>
-          <div class="">
+          </button>
+          <div class="mt-8">
             <h1 class="text-3xl text-center">Get Started</h1>
           </div>
           <form @submit.prevent="signup()" class="w-full mt-8">
@@ -125,7 +126,7 @@
                   placeholder="Name"
                   id="name"
                   required
-                  class="appearance-none font-thin bg-transparent border-b border-b-1 border-teal-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
+                  class="appearance-none placeholder-gray-500 bg-transparent border-b border-b-1 border-gray-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
                 />
               </label>
             </div>
@@ -137,7 +138,7 @@
                   placeholder="Email"
                   id="email2"
                   required
-                  class="appearance-none font-thin bg-transparent border-b border-b-1 border-teal-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
+                  class="appearance-none placeholder-gray-500 bg-transparent border-b border-b-1 border-gray-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
                 />
               </label>
             </div>
@@ -149,11 +150,11 @@
                   placeholder="Password (6+ char)"
                   id="password2"
                   required
-                  class="appearance-none font-thin bg-transparent border-b border-b-1 border-teal-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
+                  class="appearance-none placeholder-gray-500 bg-transparent border-b border-b-1 border-gray-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
                 />
               </label>
             </div>
-            <div class="flex items-center py-2">
+            <div class="flex items-center py-2 relative">
               <label for="passwordCheck" class="w-full">
                 <input
                   v-model.trim="signupForm.passwordCheck"
@@ -161,15 +162,23 @@
                   placeholder="Confirm Password"
                   id="passwordCheck"
                   required
-                  class="appearance-none font-thin bg-transparent border-b border-b-1 border-teal-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
+                  class="appearance-none placeholder-gray-500 bg-transparent border-b border-b-1 border-gray-100 w-full text-teal-100 py-1 px-2 leading-tight focus:outline-none focus:border-teal-200"
                 />
               </label>
+              <transition name="fade">
+                <p
+                  v-if="!passwordsMatch"
+                  class="block absolute mt-8 font-semibold text-sm text-red-700"
+                >
+                  Passwords do not match!
+                </p></transition
+              >
             </div>
             <button
               @click="signup()"
               v-on:keyup.enter="signup()"
               type="submit"
-              class="mt-8 w-full bg-teal-100 rounded-sm text-teal-900 text-sm font-semibold py-2 mt-4 shadow-sm hover:bg-teal-200 hover:text-teal-800"
+              class="mt-8 w-full bg-gray-100 rounded-sm text-teal-800 text-sm font-semibold py-2 mt-4 shadow-sm hover:bg-gray-200 focus:bg-gray-200"
             >
               Sign Up
             </button>
@@ -203,6 +212,7 @@ export default {
       },
       showSignupForm: false,
       showPasswordReset: false,
+      passwordsMatch: true,
     };
   },
   methods: {
@@ -213,6 +223,16 @@ export default {
       });
     },
     signup() {
+      if (
+        `${this.signupForm.password}` !== `${this.signupForm.passwordCheck}`
+      ) {
+        this.passwordsMatch = false;
+        setTimeout(() => {
+          this.passwordsMatch = true;
+        }, 3000);
+        return;
+      }
+
       this.$store.dispatch("signup", {
         email: this.signupForm.email,
         password: this.signupForm.password,

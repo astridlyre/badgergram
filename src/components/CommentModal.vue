@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="flex w-full items-center justify-between">
+  <div class="mb-2">
+    <div class="flex w-full h-8 items-center justify-between">
       <router-link :to="'/user/' + comment.userId" class="flex items-center">
         <img
           :src="comment.userPic"
@@ -28,39 +28,43 @@
         ></CommentActionsModal>
       </div>
     </div>
-    <div v-if="editing">
+    <div v-if="editing" class="flex">
       <div
         v-if="editing"
         @click="editing = false"
         class="fixed z-0 inset-0 w-screen h-screen"
       ></div>
-      <form @submit.prevent class="w-full flex items-center">
-        <textarea
-          v-model.trim="editingContent"
-          placeholder="Write a comment..."
-          class="hide-scrollbar z-30 form-textarea resize-none w-full h-10 text-sm rounded-full"
-        ></textarea>
-        <button
-          @click="updateComment(commentId, editingContent), (editing = false)"
-          type="button"
-          class="focus:outline-none z-30"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="ml-2 stroke-current text-teal-600 w-6 h-6 hover:text-teal-900"
-          >
-            <polyline points="9 11 12 14 22 4"></polyline>
-            <path
-              d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
-            ></path>
-          </svg>
-        </button>
+      <form @submit.prevent class="ml-8 flex items-center">
+        <div class="relative">
+          <p class="px-2">
+            {{ comment.content }}
+          </p>
+          <textarea
+            v-model="comment.content"
+            class="absolute inset-0 w-full hide-scrollbar bg-gray-300 px-2 py-0 border-none z-30 form-textarea resize-none rounded-lg"
+          ></textarea>
+        </div>
       </form>
+      <button
+        @click="updateComment(commentId, comment.content), (editing = false)"
+        type="button"
+        class="focus:outline-none z-30"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="ml-2 stroke-current text-teal-600 w-6 h-6 hover:text-teal-900"
+        >
+          <polyline points="9 11 12 14 22 4"></polyline>
+          <path
+            d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+          ></path>
+        </svg>
+      </button>
     </div>
     <div v-else class="ml-8" style="width: fit-content;">
       <p class="px-2 bg-gray-300 rounded-lg">
@@ -88,7 +92,7 @@ export default {
   props: ["post", "currentUser", "postId", "comment"],
   data() {
     return {
-      editingContent: "",
+      // editingContent: "",
       editing: false,
       commentContent: "",
       commentId: "",
@@ -125,11 +129,11 @@ export default {
       this.commentContent = "";
     },
     updateComment(commentId) {
-      if (this.editingContent == "") {
+      if (this.comment.content == "") {
         return;
       }
       commentsCollection.doc(commentId).update({
-        content: this.editingContent,
+        content: this.comment.content,
       });
     },
   },
