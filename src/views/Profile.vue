@@ -1,7 +1,7 @@
 <template>
   <section class="min-h-screen max-w-full flex justify-center items-start">
     <div
-      class="mt-20 p-4 w-full bg-gray-100 rounded flex flex-col items-start relative shadow"
+      class="mt-20 p-4 w-full bg-gray-100 rounded overflow-hidden flex flex-col items-start relative shadow"
     >
       <div class="p-4 flex items-center">
         <img
