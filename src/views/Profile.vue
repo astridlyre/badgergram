@@ -36,7 +36,7 @@
             <polyline points="17 11 19 13 23 9"></polyline>
           </svg>
           <button
-            v-if="userId !== currentUser && areWeFriends === false"
+            v-if="userId !== currentUser && !areWeFriends"
             @click="addFriend(userId), (pending = true)"
             class="ml-2 p-2 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
           >
@@ -55,7 +55,9 @@
               <line x1="23" y1="11" x2="17" y2="11"></line>
             </svg>
           </button>
-          <span v-if="pending" class="ml-2 text-xs font-semibold text-teal-700"
+          <span
+            v-if="pending && !areWeFriends"
+            class="ml-2 text-xs font-semibold text-teal-700"
             >(Request pending)</span
           >
         </div>
@@ -204,23 +206,24 @@ export default {
     async checkIfFriends() {
       const docId1 = `${this.userId}_${this.currentUser}`;
       const docId2 = `${this.currentUser}_${this.userId}`;
-      await friendRequestsCollection.doc(docId1).get();
-      await friendRequestsCollection.doc(docId2).get();
-      if (docId1.exits || docId2.exists) {
-        return (this.areWeFriends = true);
+      const doc1 = await friendRequestsCollection.doc(docId1).get();
+      const doc2 = await friendRequestsCollection.doc(docId2).get();
+      if (doc1.exits || doc2.exists) {
+        return (this.areWeFriends = true), (this.pending = false);
       }
     },
   },
   created() {
     this.getProfileUser(this.userId);
-    this.checkIfFriends();
     this.checkForPending();
+    this.checkIfFriends();
   },
   watch: {
     // eslint-disable-next-line no-unused-vars
     $route(to, from) {
       this.getProfileUser(this.userId);
       this.checkForPending();
+      this.checkIfFriends();
     },
   },
 };
