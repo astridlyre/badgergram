@@ -20,29 +20,45 @@
         <h3 class="font-semibold text-2xl ml-2 text-teal-800">
           {{ profileUser.name }}
         </h3>
-        <button
-          v-if="userId !== currentUser"
-          @click="addFriend(userId), (pending = true)"
-          class="ml-2 p-2 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
-        >
+        <div class="flex items-center">
           <svg
+            v-if="areWeFriends"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="stroke-current text-teal-800 w-4 h-4"
+            class="w-4 h-4 stroke-current text-teal-700 ml-2"
           >
             <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
             <circle cx="8.5" cy="7" r="4"></circle>
-            <line x1="20" y1="8" x2="20" y2="14"></line>
-            <line x1="23" y1="11" x2="17" y2="11"></line>
+            <polyline points="17 11 19 13 23 9"></polyline>
           </svg>
-        </button>
-        <span v-if="pending" class="ml-2 text-xs font-semibold text-teal-700"
-          >(Request pending)</span
-        >
+          <button
+            v-if="userId !== currentUser && areWeFriends === false"
+            @click="addFriend(userId), (pending = true)"
+            class="ml-2 p-2 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="stroke-current text-teal-800 w-4 h-4"
+            >
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+          </button>
+          <span v-if="pending" class="ml-2 text-xs font-semibold text-teal-700"
+            >(Request pending)</span
+          >
+        </div>
       </div>
 
       <div class="mt-12 p-4">
@@ -124,6 +140,7 @@ export default {
       profileUser: {},
       pending: false,
       friends: [],
+      areWeFriends: false,
     };
   },
   computed: {
@@ -174,7 +191,7 @@ export default {
     },
     async checkForPending() {
       const doc = await friendRequestsCollection.doc(this.docId).get();
-      if (doc.exists) {
+      if (doc.exists && this.areWeFriends === false) {
         this.pending = true;
         return;
       }
@@ -184,9 +201,19 @@ export default {
       await friendRequestsCollection.doc(this.docId).delete();
       this.pending = false;
     },
+    async checkIfFriends() {
+      const docId1 = `${this.userId}_${this.currentUser}`;
+      const docId2 = `${this.currentUser}_${this.userId}`;
+      await friendRequestsCollection.doc(docId1).get();
+      await friendRequestsCollection.doc(docId2).get();
+      if (docId1.exits || docId2.exists) {
+        return (this.areWeFriends = true);
+      }
+    },
   },
   created() {
     this.getProfileUser(this.userId);
+    this.checkIfFriends();
     this.checkForPending();
   },
   watch: {
