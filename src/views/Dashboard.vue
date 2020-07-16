@@ -33,13 +33,14 @@
 
     <!-- Make a post section -->
     <div
-      class="flex flex-col justify-end items-center fixed bottom-0 bg-gray-100 max-w-screen-sm w-full shadow border-t z-50 sm:rounded-t"
+      :class="{ 'slide-out': !posterVisible, 'slide-in': posterVisible }"
+      class="flex flex-col justify-end items-center fixed bottom-0 bg-gray-100 max-w-screen-sm w-full shadow border-t z-30 sm:rounded-t"
     >
       <div class="p-1 flex w-full justify-center items-center">
         <button
           type="button"
           @click="posterToggle(), focus()"
-          class="cursor-pointer focus:outline-none hover:bg-gray-200 focus:bg-gray-200 px-4"
+          class="cursor-pointer p-1 focus:outline-none hover:bg-gray-200 focus:bg-gray-200"
         >
           <svg
             v-if="!posterVisible"
@@ -73,27 +74,26 @@
           </svg>
         </button>
       </div>
-      <transition name="slide-fade">
-        <div v-show="posterVisible" class="px-4 mb-4 w-full">
-          <form @submit.prevent>
-            <textarea
-              ref="makeAPost"
-              v-model.trim="post.content"
-              class="hide-scrollbar form-textarea placeholder-gray-500 text-teal-800 mt-1 block w-full resize-none"
-              rows="3"
-              :placeholder="placeholderText"
-            ></textarea>
-            <button
-              @click="createPost()"
-              :disabled="post.content === ''"
-              type="button"
-              class="py-2 mt-2 w-full bg-teal-800 rounded text-gray-100 text-sm font-bold hover:bg-teal-800 focus:bg-teal-800"
-            >
-              Post
-            </button>
-          </form>
-        </div>
-      </transition>
+
+      <div class="px-4 mb-4 w-full">
+        <form @submit.prevent>
+          <textarea
+            ref="makeAPost"
+            v-model.trim="post.content"
+            class="hide-scrollbar form-textarea placeholder-gray-500 text-teal-800 mt-1 block w-full resize-none"
+            rows="3"
+            :placeholder="placeholderText"
+          ></textarea>
+          <button
+            @click="createPost()"
+            :disabled="post.content === ''"
+            type="button"
+            class="py-2 mt-2 w-full bg-teal-800 rounded text-gray-100 text-sm font-bold hover:bg-teal-800 focus:bg-teal-800"
+          >
+            Post
+          </button>
+        </form>
+      </div>
     </div>
     <!-- end make a post section -->
   </section>
@@ -173,17 +173,6 @@ export default {
 </script>
 
 <style scoped>
-.slide-fade-enter-active {
-  transition: all 0.1s ease;
-}
-.slide-fade-leave-active {
-  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
-}
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateY(10px);
-  opacity: 0;
-}
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -192,5 +181,14 @@ export default {
 .hide-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+.slide-out {
+  transform: translate3d(0, 79%, 0);
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-in {
+  transition: all 0.18s ease-out;
+  transform: translate3d(0, 0, 0);
 }
 </style>

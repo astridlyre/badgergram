@@ -20,6 +20,9 @@ export default {
   components: {
     SiteNav,
   },
+  data() {
+    return {};
+  },
   computed: {
     ...mapState(["userProfile"]),
     showNav() {
@@ -29,12 +32,14 @@ export default {
 };
 </script>
 
-<style src="./assets/css/app.css">
+<style>
+@import url("./assets/css/app.css");
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.25s;
+  transition: all 0.15s ease-out;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+  transform: translate3d(0, 0, 5rem);
 }
 </style>

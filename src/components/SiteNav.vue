@@ -1,6 +1,7 @@
 <template>
   <header
-    class=" w-full bg-gray-100 flex justify-center fixed inset-x-0 top-0 shadow z-50 border-t-4 border-teal-800"
+    :class="{ navbarHidden: scrolled, navbarShown: !scrolled }"
+    class="w-full bg-gray-100 flex justify-center fixed inset-x-0 top-0 shadow z-30 border-t-4 border-teal-800"
   >
     <nav class="flex w-full sm:max-w-screen-sm justify-between items-center">
       <!-- Branding -->
@@ -44,6 +45,53 @@
             ></a
           ></router-link
         >
+        <!-- <a
+          v-if="!showMessageMenu"
+          @click="showMessageMenu"
+          class="p-4 hover:bg-gray-200 focus:bg-gray-200 rounded flex items-center cursor-pointer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="stroke-current w-6 h-6 text-teal-800"
+          >
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg
+        ></a>
+        <div
+          v-if="showMessageMenu"
+          @click="!showMessageMenu"
+          class="fixed inset-0 w-screen h-screen"
+        ></div>
+        <div v-if="showMessageMenu">
+          <router-link to="/messages" class="relative z-0">
+            <a
+              @click="!showMessageMenu"
+              class="p-4 hover:bg-gray-200 bg-gray-100 focus:bg-gray-200 rounded flex items-center cursor-pointer"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="stroke-current w-6 h-6 text-teal-800"
+              >
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></a
+          ></router-link>
+          <ul
+            class="p-2 flex flex-col text-sm font-semibold absolute w-64 right-0 mr-8 bg-gray-100 rounded shadow"
+            style="z-index: 0;"
+          >
+            <li>Ruffles sent you a friend request!</li>
+          </ul>
+        </div> -->
+
         <a
           @click="logout()"
           class="p-4 hover:bg-gray-200 focus:bg-gray-200 rounded flex items-center cursor-pointer"
@@ -71,6 +119,14 @@ import { mapState } from "vuex";
 import { auth } from "@/firebase";
 
 export default {
+  data() {
+    return {
+      limitPosition: 100,
+      scrolled: false,
+      lastPosition: 0,
+      showMessageMenu: false,
+    };
+  },
   computed: {
     ...mapState(["userProfile"]),
     currentUserPath: function() {
@@ -81,6 +137,37 @@ export default {
     logout() {
       this.$store.dispatch("logout");
     },
+    handleScroll() {
+      if (
+        (this.lastPosition,
+        window.scrollY &&
+          this.limitPosition < window.scrollY &&
+          !this.showMessageMenu)
+      ) {
+        this.scrolled = true;
+      }
+      if (this.lastPosition > window.scrollY) {
+        this.scrolled = false;
+      }
+      this.lastPosition = window.scrollY;
+    },
+  },
+  created() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
   },
 };
 </script>
+
+<style scoped>
+.navbarHidden {
+  transform: translateY(-100%);
+  transition: all 0.2s ease-out;
+}
+.navbarShown {
+  transform: translateY(0);
+  transition: all 0.2s ease-out;
+}
+</style>

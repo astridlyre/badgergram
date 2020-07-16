@@ -5,9 +5,9 @@
     >
       <div class="p-4 flex items-center">
         <img
-          :src="userProfile.picUrl"
+          :src="profileUser.picUrl"
           id="profilePic"
-          alt="Current Profile Pic"
+          alt=""
           class="w-12 h-12 border-2 border-teal-900 rounded-full"
         />
         <h3 class="font-semibold text-2xl ml-2 text-teal-900">
@@ -18,7 +18,7 @@
       <img
         :src="profileUser.picUrl"
         id="profilePic"
-        alt="Current Profile Pic"
+        alt=""
         class="absolute right-0 top-0 w-full sm:w-1/2 sm:mr-4"
         style="opacity: 0.1;"
       />

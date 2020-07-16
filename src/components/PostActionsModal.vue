@@ -28,7 +28,7 @@
       <transition name="fade">
         <ul
           v-if="showActions"
-          class="flex flex-col sm:flex-row absolute top-0 left-0 right-0 sm:bottom-0 -mt-1 shadow rounded z-30 bg-gray-100 py-1"
+          class="flex flex-col sm:flex-row absolute top-0 left-0 right-0 sm:bottom-0 -mt-1 shadow rounded z-20 bg-gray-100 py-1"
         >
           <li class="sm:hidden">
             <button
