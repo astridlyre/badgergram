@@ -39,13 +39,24 @@ fb.usersCollection.onSnapshot((snapshot) => {
   snapshot.forEach((doc) => {
     let user = doc.data();
     user.id = doc.id;
-    user.bio = doc.bio;
-    user.picUrl = doc.picUrl;
 
     usersArray.push(user);
   });
 
   store.commit("setUsers", usersArray);
+});
+
+fb.friendRequestsCollection.onSnapshot((snapshot) => {
+  let requestsArray = [];
+
+  snapshot.forEach((doc) => {
+    let request = doc.data();
+    request.id = doc.id;
+
+    requestsArray.push(request);
+  });
+
+  store.commit("setFriendRequests", requestsArray);
 });
 
 const store = new Vuex.Store({
@@ -54,6 +65,7 @@ const store = new Vuex.Store({
     posts: [],
     comments: [],
     users: [],
+    friendRequests: [],
   },
   mutations: {
     setUserProfile(state, val) {
@@ -67,6 +79,9 @@ const store = new Vuex.Store({
     },
     setUsers(state, val) {
       state.users = val;
+    },
+    setFriendRequests(state, val) {
+      state.friendRequests = val;
     },
   },
   actions: {
@@ -107,7 +122,7 @@ const store = new Vuex.Store({
         title: "a new badger",
         gender: "badger",
         website: "https://badbadger.netlify.app",
-        // friends: [],
+        friends: [],
       });
 
       // fetch user profile and set in state

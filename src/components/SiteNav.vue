@@ -20,10 +20,10 @@
               />
             </g>
           </svg>
-          <h3 class="ml-1 text-lg leading-none text-teal-700 hidden md:block">
+          <h3 class="ml-1 text-lg leading-none text-teal-500 hidden md:block">
             bad<span class="text-teal-800">badger</span>
           </h3>
-          <h3 class="ml-1 text-lg text-teal-700 md:hidden">
+          <h3 class="ml-1 text-lg text-teal-500 md:hidden">
             b<span class="text-teal-800">b</span>
           </h3>
         </a>
@@ -45,52 +45,55 @@
             ></a
           ></router-link
         >
-        <!-- <a
-          v-if="!showMessageMenu"
-          @click="showMessageMenu"
-          class="p-4 hover:bg-gray-200 focus:bg-gray-200 rounded flex items-center cursor-pointer"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="stroke-current w-6 h-6 text-teal-800"
-          >
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg
-        ></a>
         <div
           v-if="showMessageMenu"
-          @click="!showMessageMenu"
-          class="fixed inset-0 w-screen h-screen"
+          @click="showMessageMenu = false"
+          class="fixed h-screen w-screen inset-0 z-0"
         ></div>
-        <div v-if="showMessageMenu">
-          <router-link to="/messages" class="relative z-0">
-            <a
-              @click="!showMessageMenu"
-              class="p-4 hover:bg-gray-200 bg-gray-100 focus:bg-gray-200 rounded flex items-center cursor-pointer"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="stroke-current w-6 h-6 text-teal-800"
-              >
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></a
-          ></router-link>
-          <ul
-            class="p-2 flex flex-col text-sm font-semibold absolute w-64 right-0 mr-8 bg-gray-100 rounded shadow"
-            style="z-index: 0;"
+        <div class="z-40 relative">
+          <!-- <router-link to="/messages" class="relative z-0"> -->
+          <div
+            v-if="myFriendRequests.length > 0"
+            class="absolute top-0 right-0 m-2 font-semibold text-teal-500"
           >
-            <li>Ruffles sent you a friend request!</li>
-          </ul>
-        </div> -->
+            {{ myFriendRequests.length }}
+          </div>
+          <a
+            @click="showMessageMenu = !showMessageMenu"
+            class="p-4 hover:bg-gray-200 bg-gray-100 focus:bg-gray-200 rounded flex items-center cursor-pointer"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="stroke-current w-6 h-6 text-teal-800"
+            >
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg
+          ></a>
+
+          <div
+            v-if="showMessageMenu"
+            class="absolute right-0 w-56 rounded shadow bg-gray-100"
+          >
+            <div
+              v-for="request in myFriendRequests"
+              :key="request.id"
+              class="flex flex-col flex-col text-sm font-semibold right-0 "
+            >
+              <transition name="slide-fade">
+                <FriendRequestModal
+                  :request="request"
+                  :currentUser="currentUser"
+                  v-on:accept="accept = true"
+                  v-on:decline="decline = true"
+                ></FriendRequestModal>
+              </transition>
+            </div>
+          </div>
+        </div>
 
         <a
           @click="logout()"
@@ -117,8 +120,12 @@
 <script>
 import { mapState } from "vuex";
 import { auth } from "@/firebase";
+import FriendRequestModal from "@/components/FriendRequestModal";
 
 export default {
+  components: {
+    FriendRequestModal,
+  },
   data() {
     return {
       limitPosition: 100,
@@ -128,14 +135,29 @@ export default {
     };
   },
   computed: {
-    ...mapState(["userProfile"]),
+    ...mapState(["userProfile", "users", "friendRequests"]),
     currentUserPath: function() {
       return `/user/${auth.currentUser.uid}`;
+    },
+    currentUser: function() {
+      return auth.currentUser.uid;
+    },
+    myFriendRequests: function() {
+      const me = this.currentUser;
+      return this.friendRequests.filter(function(request) {
+        return request.getter === me && request.status === "pending";
+      });
     },
   },
   methods: {
     logout() {
       this.$store.dispatch("logout");
+    },
+    acceptFriendRequest() {
+      return;
+    },
+    declineFriendRequest() {
+      return;
     },
     handleScroll() {
       if (
@@ -169,5 +191,16 @@ export default {
 .navbarShown {
   transform: translateY(0);
   transition: all 0.2s ease-out;
+}
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>

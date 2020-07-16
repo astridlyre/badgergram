@@ -29,6 +29,7 @@ const usersCollection = db.collection("users");
 const postsCollection = db.collection("posts");
 const commentsCollection = db.collection("comments");
 const reactionsCollection = db.collection("reactions");
+const friendRequestsCollection = db.collection("friendrequests");
 
 // export utils/refs
 export {
@@ -42,4 +43,5 @@ export {
   reactionsCollection,
   incrementMinus,
   incrementPlus,
+  friendRequestsCollection,
 };
