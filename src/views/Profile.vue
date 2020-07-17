@@ -77,7 +77,7 @@
           </p>
         </div>
       </div>
-      <button
+      <a
         class="flex mt-4 p-4 font-semibold text-sm flex items-center text-teal-900 rounded hover:bg-gray-300 focus:bg-gray-300"
         :href="profileUser.website"
         target="_blank"
@@ -99,7 +99,7 @@
           <line x1="10" y1="14" x2="21" y2="3"></line>
         </svg>
         <span class="ml-2">My Awesome Website</span>
-      </button>
+      </a>
       <div v-if="userId === currentUser" class="w-full">
         <h5
           v-if="myFriends.length > 0"
@@ -177,6 +177,7 @@ export default {
     async getProfileUser(id) {
       const user = await usersCollection.doc(id).get();
       this.profileUser = user.data();
+      console.log(this.profileUser.website);
       return;
     },
     async addFriend(id) {
