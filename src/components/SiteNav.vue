@@ -75,7 +75,7 @@
           ></a>
 
           <div
-            v-if="showMessageMenu"
+            v-if="showMessageMenu && myFriendRequests.length > 0"
             class="absolute right-0 w-56 rounded shadow bg-gray-100"
           >
             <div
@@ -91,6 +91,14 @@
                   v-on:decline="decline = true"
                 ></FriendRequestModal>
               </transition>
+            </div>
+          </div>
+          <div
+            v-if="showMessageMenu && myFriendRequests.length === 0"
+            class="absolute right-0 w-56 rounded shadow bg-gray-100"
+          >
+            <div class="flex flex-col flex-col text-sm font-semibold right-0 ">
+              <span class="p-2 text-teal-800">No new notifications.</span>
             </div>
           </div>
         </div>

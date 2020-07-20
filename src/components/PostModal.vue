@@ -207,7 +207,7 @@
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="stroke-current text-gray-800 h-4 w-4"
+            class="stroke-current text-gray-800 h-4 w-4 flex-shrink-0"
           >
             <path
               d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
@@ -224,7 +224,32 @@
       </div>
     </div>
     <!-- Comments Section -->
-    <div class="px-4 text-gray-900 bg-gray-100 w-full">
+    <div
+      v-if="postComments.length > 3"
+      class="px-4 text-gray-900 bg-gray-100 w-full"
+    >
+      <div v-for="comment in commentsToDisplay" :key="comment.id" class="">
+        <CommentModal
+          :comment="comment"
+          :userId="comment.userId"
+          :userPic="comment.userPic"
+          :userName="comment.userName"
+          :createdOn="comment.createdOn"
+          :commentId="comment.id"
+          :commentContent="comment.content"
+          :currentUser="currentUser"
+        ></CommentModal>
+      </div>
+      <button
+        type="button"
+        @click="showLessComments = !showLessComments"
+        class="text-sm font-semibold text-gray-500 focus:outline-none hover:text-gray-800"
+      >
+        <span v-if="showLessComments">Show all comments</span>
+        <span v-else>Show less comments</span>
+      </button>
+    </div>
+    <div v-else class="px-4 text-gray-900 bg-gray-100 w-full">
       <div v-for="comment in postComments" :key="comment.id" class="">
         <CommentModal
           :comment="comment"
@@ -308,6 +333,7 @@ export default {
       editing: false,
       editedContent: this.postContent,
       commentContent: "",
+      showLessComments: true,
     };
   },
   computed: {
@@ -317,6 +343,13 @@ export default {
       return this.comments.filter(function(comment) {
         return comment.postId === currentPost;
       });
+    },
+    commentsToDisplay: function() {
+      if (this.showLessComments) {
+        return this.postComments.slice(0, 3);
+      } else {
+        return this.postComments;
+      }
     },
   },
   methods: {

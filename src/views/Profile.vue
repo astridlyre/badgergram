@@ -107,8 +107,8 @@
         >
           Friends:
         </h5>
-        <div class="w-full flex">
-          <div v-for="friend in myFriends" :key="friend.id" class="w-full">
+        <div class="w-full flex flex-wrap">
+          <div v-for="friend in myFriends" :key="friend.id" class="w-1/2">
             <FriendModal
               :userId="friend"
               :currentUser="currentUser"

@@ -9,7 +9,7 @@
       <button
         type="button"
         @click="showActions = true"
-        class="w-full flex justify-end items-center cursor-pointer text-sm p-4 rounded hover:bg-gray-200 focus:bg-gray-200 focus:outline-none"
+        class="w-full flex justify-end items-center cursor-pointer text-sm p-4 rounded sm:hover:bg-gray-200 sm:focus:bg-gray-200 focus:outline-none"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

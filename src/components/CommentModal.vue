@@ -1,6 +1,6 @@
 <template>
   <div class="mb-2">
-    <div class="flex w-full h-8 items-center justify-between">
+    <div class="flex w-full items-center justify-between">
       <router-link :to="'/user/' + comment.userId" class="flex items-center">
         <img
           :src="comment.userPic"
@@ -67,9 +67,29 @@
       </button>
     </div>
     <div v-else class="ml-8" style="width: fit-content;">
-      <p class="px-2 bg-gray-300 rounded-lg">
-        {{ comment.content }}
-      </p>
+      <div v-if="comment.content.length > 300">
+        <p v-if="!showMore" class="px-2 bg-gray-300 rounded-lg">
+          {{ comment.content | trimLength }}
+          <span
+            @click="showMore = true"
+            class="cursor-pointer inline-block text-gray-500 font-semibold text-sm hover:text-gray-800 focus:text-gray-800"
+            >Show more</span
+          >
+        </p>
+        <p v-else class="px-2 bg-gray-300 rounded-lg">
+          {{ comment.content }}
+          <span
+            @click="showMore = false"
+            class="cursor-pointer inline-block text-gray-500 font-semibold text-sm hover:text-gray-800 focus:text-gray-800"
+            >Show less</span
+          >
+        </p>
+      </div>
+      <div v-else>
+        <p class="px-2 bg-gray-300 rounded-lg">
+          {{ comment.content }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -96,6 +116,7 @@ export default {
       editing: false,
       commentContent: "",
       commentId: "",
+      showMore: false,
     };
   },
   computed: {
@@ -145,6 +166,12 @@ export default {
 
       let date = val.toDate();
       return moment(date).fromNow();
+    },
+    trimLength(val) {
+      if (val.length < 300) {
+        return val;
+      }
+      return `${val.substring(0, 300)}...`;
     },
   },
 };
