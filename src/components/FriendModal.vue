@@ -1,6 +1,6 @@
 <template>
-  <div class="p-4 flex items-center">
-    <div class="">
+  <div class="px-4 py-2 flex items-center">
+    <div v-if="linkToProfile" class="">
       <router-link
         :to="'/user/' + user.id"
         class="text-teal-800 flex items-center"
@@ -13,7 +13,20 @@
         <h6 class="ml-2 font-semibold">{{ user.name }}</h6></router-link
       >
     </div>
-    <div class="flex items-center ml-4">
+    <div v-if="!linkToProfile">
+      <button
+        @click="$emit('newMessage', user.id)"
+        class="text-teal-800 flex items-center"
+      >
+        <img
+          :src="user.picUrl"
+          alt=""
+          class="w-6 h-6 border-teal-800 border-2 rounded-full"
+        />
+        <h6 class="ml-2 font-semibold">{{ user.name }}</h6>
+      </button>
+    </div>
+    <div v-if="showActions" class="flex items-center ml-4">
       <button
         @click="deleteFriend(user.id)"
         class="p-1 ml-1 text-red-700 font-semibold hover:bg-gray-200 focus:bg-gray-200 focus:outline-none rounded p-2"
@@ -42,7 +55,7 @@ import { mapState } from "vuex";
 import { friendRequestsCollection } from "../firebase";
 
 export default {
-  props: ["userId", "currentUser"],
+  props: ["userId", "currentUser", "showActions", "linkToProfile"],
   data() {
     return {
       deleted: false,

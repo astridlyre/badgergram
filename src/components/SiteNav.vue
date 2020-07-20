@@ -122,6 +122,7 @@
         ></a>
       </div>
     </nav>
+    <!-- <Messages></Messages> -->
   </header>
 </template>
 
@@ -129,10 +130,12 @@
 import { mapState } from "vuex";
 import { auth } from "@/firebase";
 import FriendRequestModal from "@/components/FriendRequestModal";
+// import Messages from "@/components/Messages";
 
 export default {
   components: {
     FriendRequestModal,
+    // Messages,
   },
   data() {
     return {

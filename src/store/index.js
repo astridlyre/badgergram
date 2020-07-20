@@ -20,6 +20,20 @@ fb.postsCollection.orderBy("createdOn", "desc").onSnapshot((snapshot) => {
   store.commit("setPosts", postsArray);
 });
 
+fb.messagesCollection.orderBy("createdOn", "asc").onSnapshot((snapshot) => {
+  let messagesArray = [];
+
+  snapshot.forEach((doc) => {
+    let message = doc.data();
+    message.id = doc.id;
+    message.authorId = doc.userId;
+
+    messagesArray.push(message);
+  });
+
+  store.commit("setMessages", messagesArray);
+});
+
 fb.commentsCollection.orderBy("createdOn", "asc").onSnapshot((snapshot) => {
   let commentsArray = [];
 
@@ -66,6 +80,7 @@ const store = new Vuex.Store({
     comments: [],
     users: [],
     friendRequests: [],
+    messages: [],
   },
   mutations: {
     setUserProfile(state, val) {
@@ -82,6 +97,9 @@ const store = new Vuex.Store({
     },
     setFriendRequests(state, val) {
       state.friendRequests = val;
+    },
+    setMessages(state, val) {
+      state.messages = val;
     },
   },
   actions: {

@@ -112,6 +112,8 @@
             <FriendModal
               :userId="friend"
               :currentUser="currentUser"
+              :showActions="true"
+              :linkToProfile="true"
             ></FriendModal>
           </div>
         </div>
@@ -209,7 +211,7 @@ export default {
       const docId2 = `${this.currentUser}_${this.userId}`;
       const doc1 = await friendRequestsCollection.doc(docId1).get();
       const doc2 = await friendRequestsCollection.doc(docId2).get();
-      if (doc1.exits || doc2.exists) {
+      if (doc1.exists || doc2.exists) {
         return (this.areWeFriends = true), (this.pending = false);
       }
     },
@@ -221,7 +223,7 @@ export default {
   },
   watch: {
     // eslint-disable-next-line no-unused-vars
-    $route(to, from) {
+    $route(to, from, next) {
       this.getProfileUser(this.userId);
       this.checkForPending();
       this.checkIfFriends();

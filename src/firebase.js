@@ -30,6 +30,7 @@ const postsCollection = db.collection("posts");
 const commentsCollection = db.collection("comments");
 const reactionsCollection = db.collection("reactions");
 const friendRequestsCollection = db.collection("friendrequests");
+const messagesCollection = db.collection("messages");
 
 // export utils/refs
 export {
@@ -44,4 +45,5 @@ export {
   incrementMinus,
   incrementPlus,
   friendRequestsCollection,
+  messagesCollection,
 };
