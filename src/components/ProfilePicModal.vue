@@ -86,8 +86,8 @@ export default {
       const rect = this.canvas.getBoundingClientRect();
 
       return {
-        x: this.mouse.current.x - rect.left,
-        y: this.mouse.current.y - rect.top,
+        x: this.mouse.current.x - (rect.left + window.scrollX),
+        y: this.mouse.current.y - (rect.top + window.scrollY),
       };
     },
   },
