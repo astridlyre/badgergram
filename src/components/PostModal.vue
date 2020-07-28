@@ -71,7 +71,10 @@
       <div v-else>
         <div v-if="postContent.length > 300" class="px-4">
           <div>
-            <p v-if="!showFullPost" class="mt-4 text-gray-800">
+            <p
+              v-if="!showFullPost"
+              class="mt-4 text-gray-800 whitespace-pre-wrap"
+            >
               {{ postContent | trimLength
               }}<a
                 @click="showFullPost = true"
@@ -80,7 +83,7 @@
                 show more</a
               >
             </p>
-            <p v-else class="mt-4 text-gray-800">
+            <p v-else class="mt-4 text-gray-800 whitespace-pre-wrap">
               {{ postContent }}
               <a
                 @click="showFullPost = false"
@@ -92,7 +95,9 @@
           </div>
         </div>
         <div v-else class="px-4">
-          <p class="mt-4 text-gray-800">{{ postContent }}</p>
+          <p class="mt-4 text-gray-800 whitespace-pre-wrap">
+            {{ postContent }}
+          </p>
         </div>
 
         <div class="flex w-full">
