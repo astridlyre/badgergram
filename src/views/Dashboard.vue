@@ -79,7 +79,7 @@
         <form @submit.prevent>
           <textarea
             ref="makeAPost"
-            v-model.trim="post.content"
+            v-model="post.content"
             class="hide-scrollbar form-textarea placeholder-gray-500 text-teal-800 mt-1 block w-full resize-none"
             rows="3"
             :placeholder="placeholderText"
